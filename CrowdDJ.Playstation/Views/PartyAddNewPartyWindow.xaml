@@ -1,0 +1,89 @@
+﻿<Window x:Class="CrowdDJ.Playstation.Views.PartyAddNewPartyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PartyAddNewPartyWindow" Height="270" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Neue Party erstellen" FontSize="18" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Party ID:" />
+                <TextBox Grid.Column="1" Width="100" Margin="40,2,0,2"
+                         Text="{Binding Path=PartyId}"/>
+            </Grid>
+            <Grid Grid.Row="1" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Party Name:" />
+                <TextBox Grid.Column="1" Width="100" Margin="19,2,0,2"
+                         Text="{Binding Path=Name}"/>
+            </Grid>
+            <Grid Grid.Row="2" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Party Host:" />
+                <TextBox Grid.Column="1" Width="100" Margin="26,2,0,2"
+                         Text="{Binding Path=Host}"/>
+            </Grid>
+            <Grid Grid.Row="3" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Party Location:" />
+                <TextBox Grid.Column="1" Width="100" Margin="5,2,0,2"
+                         Text="{Binding Path=Location}"/>
+            </Grid>
+            <Grid Grid.Row="4" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Party Begin:" />
+                <TextBox Grid.Column="1" Width="100" Margin="20,2,0,2"
+                         Text="{Binding Path=PartyBegin}"/>
+            </Grid>
+            <Grid Grid.Row="5" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Party End:" />
+                <TextBox Grid.Column="1" Width="100" Margin="30,2,0,2"
+                         Text="{Binding Path=PartyEnd}"/>
+            </Grid>
+            <Grid Grid.Row="6" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Name="bttnAddParty" Content="Party hinzufügen" Grid.Column="0"
+                        HorizontalAlignment="Center" Width="100"
+                        Command="{Binding AddPartyCommand}"/>
+                <Button Name="bttnCancel" Content="Abbrechen" Grid.Column="1" 
+                        HorizontalAlignment="Center" Width="100"
+                        Command="{Binding CancelAddPartyCommand}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

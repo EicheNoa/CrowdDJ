@@ -1,0 +1,9 @@
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\bin\Debug\CrowdDJ.DAL.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\bin\Debug\CrowdDJ.DAL.pdb
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\bin\Debug\CrowdDJ.Interfaces.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\bin\Debug\CrowdDJ.DomainClasses.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\bin\Debug\CrowdDJ.Interfaces.pdb
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\bin\Debug\CrowdDJ.DomainClasses.pdb
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\obj\Debug\CrowdDJ.DAL.csprojResolveAssemblyReference.cache
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\obj\Debug\CrowdDJ.DAL.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.DAL\obj\Debug\CrowdDJ.DAL.pdb

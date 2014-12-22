@@ -1,0 +1,22 @@
+﻿<Window x:Class="CrowdDJ.SimpleVote.SimpleVoteUser.SimpleVoteUserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SimpleVoteUserWindow" Height="300" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="{Binding Path=CurParty}" FontSize="20" HorizontalAlignment="Center"/>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Path=AllTracks}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Titel" Binding="{Binding Path=Title}" Width="auto" />
+                <DataGridTextColumn Header="Artist" Binding="{Binding Path=Artist}" Width="auto" />
+                <DataGridTextColumn Header="Genre" Binding="{Binding Path=Genre}" Width="auto" />
+                <DataGridTextColumn Header="Länge" Binding="{Binding Path=Length}" Width="auto" />
+                <DataGridTextColumn Header="Ist Video" Binding="{Binding Path=IsVideo}" Width="auto" />
+                <DataGridTextColumn Header="Url" Binding="{Binding Path=Url}" Width="auto" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

@@ -1,0 +1,53 @@
+﻿<Window x:Class="CrowdDJ.Playstation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LogIn Fenster - Administratoren" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"  HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20">
+                Playstation Log-In
+            </Label>
+            <Image Grid.Column="1" HorizontalAlignment="Left" Source="Pictures/CrowdDJ-Logo.jpg" Height="50" Margin="20,5,5,5"/>
+        </Grid>
+        
+        <Grid Grid.Row="1" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.8*" />
+                <ColumnDefinition Width="1.5*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" HorizontalAlignment="Right">E-Mail: </Label>
+            <TextBox Grid.Column="1" HorizontalAlignment="Left" Width="250" Text="{Binding Email}"/>
+        </Grid>
+        
+        <Grid Grid.Row="2" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.8*" />
+                <ColumnDefinition Width="1.5*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" HorizontalAlignment="Right">Password: </Label>
+            <PasswordBox Grid.Column="1" HorizontalAlignment="Left" Width="250" Name="txtPassword" />
+        </Grid>
+        
+        <Grid Grid.Row="3" Margin="0,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Accept" HorizontalAlignment="Right" Width="100" Margin="0,0,5,0" 
+                    Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=txtPassword}"/>
+            <Button Grid.Column="1" Content="Cancel" HorizontalAlignment="Left" Width="100" Margin="5,0,0,0" />
+        </Grid>
+    </Grid>
+</Window>

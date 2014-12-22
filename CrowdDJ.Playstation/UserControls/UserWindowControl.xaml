@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="CrowdDJ.Playstation.UserControls.UserWindowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Margin="0,0,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="Liste aller Benutzer" HorizontalAlignment="Center" />
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <DataGrid Name="UserDataGrid" 
+                          Grid.Row="0" AutoGenerateColumns="False" 
+                          ItemsSource="{Binding Path=AllUser}"  
+                          SelectedItem="{Binding Path=IsSelectedUser}"
+                          EnableRowVirtualization="False">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding DoubleClickCommand}"
+                                                   CommandParameter="{Binding ElementName=UserDataGrid, Path=SelectedItem}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="auto" />
+                        <DataGridTextColumn Header="E-Mail" Binding="{Binding Path=Email}" Width="auto" />
+                        <DataGridTextColumn Header="IsAdmin" Binding="{Binding Path=IsAdmin}" Width="auto" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Name="bttnAddUser" Content="Benutzer hinzufügen" 
+                            Width="120" Margin="2" Command="{Binding AddUserWindowCommand}"/>
+                    <Button Grid.Column="1" Name="btnUpdateUser" Content="Benutzer updaten" 
+                            Width="120" Margin="2" Command="{Binding UpdateUserCommand}"
+                            CommandParameter="{Binding ElementName=UserDataGrid, Path=SelectedItem}"/>
+                    <Button Grid.Column="2" Name="bttnDeleteUser" Content="Benutzer löschen" 
+                            Width="120" Margin="2" Command="{Binding DeleteUserCommand}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <GridSplitter Grid.Column="0" Width="5" Margin="5, 0, 0, 0" VerticalAlignment="Stretch" />
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" HorizontalAlignment="Center" Content="An Partys teilgenommen"/>
+            <DataGrid Grid.Row="1" AutoGenerateColumns="False" 
+                      ItemsSource="{Binding Path=AttemptedParties, Mode=OneWay, IsAsync=True}" Margin="5,0,0,5" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="PartyID" Binding="{Binding Path=PartyId}" Width="auto" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="auto" />
+                    <DataGridTextColumn Header="Location" Binding="{Binding Path=Location}" Width="auto" />
+                    <DataGridTextColumn Header="Host" Binding="{Binding Path=Host}" Width="auto" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="2" Name="bttnDeleteFromParty" Content="Von Party löschen" 
+                    MaxWidth="150" Margin="2"/>
+            <Label Grid.Row="3" HorizontalAlignment="Center" Content="Gesendete Partytweets"/>
+            <DataGrid Grid.Row="4" ItemsSource="{Binding Path=SentPartyTweets, Mode=OneWay, IsAsync=True}" AutoGenerateColumns="False" Margin="5,5,0,5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="PartyID" Binding="{Binding Path=PartyId}" Width="auto" />
+                    <DataGridTextColumn Header="Nachricht" Binding="{Binding Path=Message}" Width="auto" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Grid.Row="5" Name="bttnDeleteTweet" Content="Partytweet löschen" 
+                     MaxWidth="150" Margin="2"/>
+            <Label Grid.Row="6" HorizontalAlignment="Center" Content="Gewunschene / Gewählte Tracks" />
+            <DataGrid Grid.Row="7" ItemsSource="{Binding Path=VotedTracks, Mode=TwoWay, IsAsync=True}" AutoGenerateColumns="False" Margin="5,5,0,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Titel" Binding="{Binding Path=Title}" Width="auto" />
+                    <DataGridTextColumn Header="Artist" Binding="{Binding Path=Artist}" Width="auto" />
+                    <DataGridTextColumn Header="Länge" Binding="{Binding Path=Length}" Width="auto" />
+                    <DataGridTextColumn Header="Genre" Binding="{Binding Path=Genre}" Width="auto" />
+                    <DataGridTextColumn Header="Video" Binding="{Binding Path=IsVideo}" Width="auto" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

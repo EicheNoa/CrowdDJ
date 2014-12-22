@@ -1,0 +1,83 @@
+﻿<Window x:Class="CrowdDJ.Playstation.Views.UserAddNewUserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CrowdDJ.Playstation.UserControls"
+        Title="UserAddNewUserWindow" Height="250" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Neuen Benutzer anlegen" FontSize="18" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Name:" 
+                       HorizontalAlignment="Right" />
+                <TextBox Grid.Column="1" Width="100" Margin="0,2,0,2" Text="{Binding Path=Name}"
+                         HorizontalAlignment="Left"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="E-Mail:" 
+                       HorizontalAlignment="Right"/>
+                <TextBox Grid.Column="1" Width="100" Margin="0,2,0,2" Text="{Binding Path=Email}"
+                         HorizontalAlignment="Left"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Passwort:"
+                       HorizontalAlignment="Right"/>
+                <TextBox Grid.Column="1" Width="100" Margin="0,2,0,2" Text="{Binding Path=Password}"
+                             HorizontalAlignment="Left" Name="txtPassword"/>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Passwort Erneut:" 
+                       HorizontalAlignment="Right"/>
+                <TextBox Grid.Column="1" Width="100" Margin="0,2,0,2" Text="{Binding Path=RePassword}"
+                             HorizontalAlignment="Left" Name="txtRePassword"/>
+            </Grid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Administrator:" 
+                       HorizontalAlignment="Right"/>
+                <CheckBox Grid.Column="1" Margin="40,5,0,0" IsChecked="{Binding Path=IsAdmin}"
+                          HorizontalAlignment="Left" IsThreeState="False"/>
+            </Grid>
+            <Grid Grid.Row="5" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Name="bttnAddUser" Content="User hinzufügen" Grid.Column="0"
+                        HorizontalAlignment="Center" Width="100" Command="{Binding AddNewUserCommand}" />
+                <Button Name="bttnCancel" Content="Abbrechen" Grid.Column="1" 
+                        HorizontalAlignment="Center" Width="100" Command="{Binding NewUserCancelCommand}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

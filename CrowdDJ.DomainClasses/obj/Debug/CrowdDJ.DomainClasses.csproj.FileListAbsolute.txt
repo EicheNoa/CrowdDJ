@@ -1,0 +1,5 @@
+D:\Uni\Git\CrowdDJ\CrowdDJ.DomainClasses\bin\Debug\CrowdDJ.DomainClasses.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.DomainClasses\bin\Debug\CrowdDJ.DomainClasses.pdb
+D:\Uni\Git\CrowdDJ\CrowdDJ.DomainClasses\obj\Debug\CrowdDJ.DomainClasses.csprojResolveAssemblyReference.cache
+D:\Uni\Git\CrowdDJ\CrowdDJ.DomainClasses\obj\Debug\CrowdDJ.DomainClasses.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.DomainClasses\obj\Debug\CrowdDJ.DomainClasses.pdb
