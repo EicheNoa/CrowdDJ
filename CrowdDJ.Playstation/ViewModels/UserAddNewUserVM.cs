@@ -13,7 +13,7 @@ namespace CrowdDJ.Playstation.ViewModels
 {
     class UserAddNewUserVM : ViewModelBase
     {
-        private ICrowdDJBL bl;
+        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
         public string Name {get;set;}
         public string Email { get; set; }
         public string Password { get; set; }
@@ -24,28 +24,34 @@ namespace CrowdDJ.Playstation.ViewModels
 
         public UserAddNewUserVM()
         {
-            bl = new CrowdDJBL();
             this.AddNewUserCommand = new RelayCommand(this.AddNewUser);
             this.NewUserCancelCommand = new RelayCommand(this.NewUserCancel);
+            Name = ""; Email = ""; Password = ""; RePassword = "";
 
         }
         private void NewUserCancel(object obj)
         {
-            Application.Current.Windows[1].Close();
+            CloseWindow("CrowdDJ.Playstation.Views.UserAddNewUserWindow");  
         }
         private void AddNewUser(object obj)
         {
             MessageBoxResult result;
-            if (Password.Equals(RePassword))
+            if (Name == "" || Password == "" || 
+                RePassword == "" || Email == "")
+            {
+                result = MessageBox.Show("Alle Felder müssen ausgefüllt sein!", "Fehler",
+                                                          MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (Password.Equals(RePassword))
             {
                 bl.InsertUser(new User(Name, Password, Email, IsAdmin));
-                Application.Current.Windows[1].Close();
-                result = MessageBox.Show("User has successfully been added!", "Success",
+                CloseWindow("CrowdDJ.Playstation.Views.UserAddNewUserWindow");                
+                result = MessageBox.Show("Benutzer wurde erfolgreich hinzugefügt!", "Erfolg",
                                                           MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
             else
             {
-                result = MessageBox.Show("Passwords are not equal!", "Error",
+                result = MessageBox.Show("Passwörter müssen gleich sein!", "Fehler",
                                                           MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }

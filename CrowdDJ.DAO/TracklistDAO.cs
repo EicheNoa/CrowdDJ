@@ -16,7 +16,7 @@ namespace CrowdDJ.DAO
     public class TracklistDAO : ITracklist
     {
         const string CmdInsertIntoTracklist = @"INSERT INTO [dbo].[Tracklist] (playlistId, userId, trackId) VALUES (@pPlaylistId, @pUserId, @pTrackId)";
-        const string CmdGetTracksRecommendedByUser = @"SELECT t.trackId, t.title, t.artist, t.url, t.length, t.genre, t.isVideo 
+        const string CmdGetTracksRecommendedByUser = @"SELECT t.trackId, t.title, t.artist, t.url, t.genre, t.isVideo 
                                                        FROM [dbo].[Tracklist] tl, [dbo].[Track] t
                                                        WHERE tl.userId = @pUserId AND t.trackId = tl.trackId";
         const string CmdGetAllTracklists = @"SELECT * FROM [dbo].[Tracklist]";
@@ -65,7 +65,6 @@ namespace CrowdDJ.DAO
             string rTitle = "";
             string rArtist = "";
             string rUrl = "";
-            int rLength = 0;
             string rGenre = "";
             bool rIsVideo = false;
 
@@ -78,10 +77,9 @@ namespace CrowdDJ.DAO
                     rTitle = rDr.GetString(1);
                     rArtist = rDr.GetString(2);
                     rUrl = rDr.GetString(3);
-                    rLength = rDr.GetInt32(4);
-                    rGenre = rDr.GetString(5);
-                    rIsVideo = rDr.GetBoolean(6);
-                    track = new Track(rTitle, rArtist, rUrl, rLength, rGenre, rIsVideo);
+                    rGenre = rDr.GetString(4);
+                    rIsVideo = rDr.GetBoolean(5);
+                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
                     track.TrackId = rTrackId;
 
                     result.Add(track);

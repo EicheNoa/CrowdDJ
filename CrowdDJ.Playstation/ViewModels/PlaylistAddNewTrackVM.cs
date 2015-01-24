@@ -15,14 +15,13 @@ namespace CrowdDJ.Playstation.ViewModels
         public string Title { get; set; }
         public string Artist { get; set; }
         public string Url { get; set; }
-        public int Length { get; set; }
         public string Genre { get; set; }
         public bool IsVideo { get; set; }
 
         public ICommand AddNewTrackCommand { get; private set; }
         public ICommand CancelAddTrackCommand { get; private set; }
 
-        private ICrowdDJBL bl = new CrowdDJBL();
+        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
 
         public PlaylistAddNewTrackVM()
         {
@@ -32,14 +31,23 @@ namespace CrowdDJ.Playstation.ViewModels
 
         private void AddNewTrack(object obj)
         {
-            bl.InsertTrack(new Track(Title, Artist, Url, Length, Genre, IsVideo));
-            Application.Current.Windows[1].Close();
-            MessageBoxResult result = MessageBox.Show("Track wurde hinzugefügt!!", "Gratuliere",
-                                                        MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            MessageBoxResult result;
+            if (Title == "" || Artist == "" || Url == "" || Genre == "")
+            {
+                result = MessageBox.Show("Alle Felder müssen ausgefüllt sein!", "Fehler",
+                                         MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                bl.InsertTrack(new Track(Title, Artist, Url, Genre, IsVideo));
+                CloseWindow("CrowdDJ.Playstation.Views.PlaylistAddTrackWindow");  
+                result = MessageBox.Show("Track wurde hinzugefügt!", "Gratuliere",
+                                                            MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
         private void CancelAddTrack(object obj)
         {
-            Application.Current.Windows[1].Close();
+            CloseWindow("CrowdDJ.Playstation.Views.PlaylistAddTrackWindow");  
         }
     }
 }

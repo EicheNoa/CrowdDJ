@@ -47,7 +47,8 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Content="Accept" HorizontalAlignment="Right" Width="100" Margin="0,0,5,0" 
                     Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=txtPassword}"/>
-            <Button Grid.Column="1" Content="Cancel" HorizontalAlignment="Left" Width="100" Margin="5,0,0,0" />
+            <Button Grid.Column="1" Content="Cancel" HorizontalAlignment="Left" Width="100" Margin="5,0,0,0" 
+                    Command="{Binding CancelLoginCommand}"/>
         </Grid>
     </Grid>
 </Window>

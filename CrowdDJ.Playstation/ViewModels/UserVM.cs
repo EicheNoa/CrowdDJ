@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 
@@ -42,12 +43,17 @@ namespace CrowdDJ.Playstation.ViewModels
             set { votedTracks = value; OnPropertyChanged("VotedTracks"); }
         }
         public User IsSelectedUser { get; set; }
+        public Partytweet IsSelectedPartytweet { get; set; }
+        public Party IsSelectedParty { get; set; }
         public ICommand DeleteUserCommand { get; private set; }
         public ICommand AddUserWindowCommand { get; private set; }
         public ICommand UpdateUserCommand { get; private set; }
-        public ICommand DoubleClickCommand { get; set; }
+        public ICommand DeletePartytweetCommand { get; private set; }
+        public ICommand DeleteUserFromPartyCommand { get; private set; }
+        public ICommand DoubleClickCommand { get; private set; }
+        public ICommand UpdateUserViewCommand { get; private set; }
 
-        private ICrowdDJBL bl = new CrowdDJBL();
+        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
 
         public UserVM()
         {
@@ -55,9 +61,47 @@ namespace CrowdDJ.Playstation.ViewModels
             this.DoubleClickCommand = new RelayCommand(this.SetIsSelectedUser);
             this.UpdateUserCommand = new RelayCommand(this.UpdateUser);
             this.AddUserWindowCommand = new RelayCommand(this.AddNewUserWindow);
+            this.DeleteUserFromPartyCommand = new RelayCommand(this.DeleteUserFromParty);
+            this.DeletePartytweetCommand = new RelayCommand(this.DeletePartytweet);
+            this.UpdateUserViewCommand = new RelayCommand(this.UpdateUserView);
+            SetCollections();
+        }
+
+        private void UpdateUserView(object obj)
+        {
+            SetCollections();
+        }
+
+        private void SetCollections()
+        {
             AllUser = bl.GetAllUser();
-            IsSelectedUser = AllUser.First();
+            if (AllUser.Count() > 0)
+                IsSelectedUser = AllUser.First();
             UpdateDataGrids();
+            if (AttemptedParties.Count() > 0)
+                IsSelectedParty = AttemptedParties.First();
+            if (SentPartyTweets.Count() > 0)
+                IsSelectedPartytweet = SentPartyTweets.First();  
+        }
+
+        private void DeleteUserFromParty(object obj)
+        {
+            IsSelectedParty = obj as Party;
+            if ((IsSelectedParty != null) && (obj as Party == IsSelectedParty))
+            {
+                bl.RemoveGuest(new Guest(IsSelectedUser.UserId, IsSelectedParty.PartyId));
+                AttemptedParties.Remove(IsSelectedParty);
+            }
+        }
+
+        private void DeletePartytweet(object obj)
+        {
+            IsSelectedPartytweet = obj as Partytweet;
+            if ((IsSelectedPartytweet != null) && (obj as Partytweet == IsSelectedPartytweet))
+            {
+                bl.DeletePartytweet(IsSelectedPartytweet);
+                SentPartyTweets.Remove(IsSelectedPartytweet);
+            }
         }
 
         private void UpdateDataGrids()
@@ -81,6 +125,7 @@ namespace CrowdDJ.Playstation.ViewModels
 
         private void DeleteUser(object obj)
         {
+            //SetIsSelectedUser(obj);
             if ((IsSelectedUser != null) && (obj as User == IsSelectedUser))
             {
                 bl.DeleteUser(IsSelectedUser.UserId);
@@ -95,7 +140,6 @@ namespace CrowdDJ.Playstation.ViewModels
 
         private void UpdateUser(object obj)
         {
-            SetIsSelectedUser(obj);
             bl.UpdateUser(IsSelectedUser, IsSelectedUser.UserId);
         }
     }

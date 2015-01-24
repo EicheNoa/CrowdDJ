@@ -19,7 +19,7 @@ namespace CrowdDJ.DAO
 
         const string CmdInsert = @"INSERT INTO [dbo].[Guest] (userId, partyId) VALUES (@pUserId, @pPartyId)";
         const string CmdDelete = @"DELETE FROM [dbo].[Guest] WHERE userId = @pUserId AND partyId = @pPartyId";
-        const string CmdSearch = @"SELECT * FROM [dbo].[Guest] WHERE userId = @pUserId AND partyId = @pPartyId";
+        const string CmdSearch = @"SELECT COUNT(*) FROM [dbo].[Guest] WHERE userId = @pUserId AND partyId = @pPartyId";
         const string CmdSearchGuestlist = @"SELECT u.userId, u.name, u.email, u.isAdmin FROM [dbo].[Guest] g, [dbo].[USER] u WHERE u.userId = g.userId AND g.partyId = @pPartyId";
         const string CmdSearchParties = @"SELECT p.partyId, p.name, p.location, p.host FROM [dbo].[Guest] g, [dbo].[PARTY] p WHERE p.partyId = g.partyId AND g.userId = @pUserId";
 
@@ -65,25 +65,45 @@ namespace CrowdDJ.DAO
 
         public bool AddGuest(Guest newGuest)
         {
-            using (DbCommand cmd = CreateInsertCmd(newGuest))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateInsertCmd(newGuest))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool RemoveGuest(Guest removeGuest)
         {
-            using (DbCommand cmd = CreateDeleteCmd(removeGuest))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateDeleteCmd(removeGuest))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool PartyIsVisitedByGuest(int searchGuestId, string partyId)
         {
+            int i = 0;
             using (DbCommand cmd = CreateSearchCmd(searchGuestId, partyId))
+            using (IDataReader rDr = database.ExecuteReader(cmd))
             {
-                return database.ExecuteNonQuery(cmd) >= 0;
+                while (rDr.Read())
+                {
+                    i = rDr.GetInt32(0);
+                }
+                return i > 0;
             }
         }
 

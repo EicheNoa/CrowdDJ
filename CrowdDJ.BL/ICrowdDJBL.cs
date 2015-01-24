@@ -40,7 +40,7 @@ namespace CrowdDJ.BL
         bool DeletePlaylist(int id);
         bool UpdatePlaylist(int id, Playlist updatedPlaylist);
         Playlist GetPlaylistForParty(string id);
-        ObservableCollection<Track> GetAllTracksInPlaylist(int playlistId);
+        ObservableCollection<Track> GetAllTracksForParty(string partyId);
         ObservableCollection<Playlist> GetAllPlaylists();
         #endregion //Playlist
 
@@ -69,6 +69,7 @@ namespace CrowdDJ.BL
         ObservableCollection<User> GetAllUser();
         User FindUserById(int id);
         User FindUserByEmail(string email);
+        List<KeyValuePair<string, bool>> GetAllEmails();
         #endregion //User
 
         #region Vote

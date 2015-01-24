@@ -9,6 +9,7 @@ namespace CrowdDJ.DomainClasses
     [Serializable]
     public class Party
     {
+        public Party() { }
         public Party(string partyId, string name, string location, string host, string partyBegin, string partyEnd, bool isActive)
         {
             PartyId = partyId;

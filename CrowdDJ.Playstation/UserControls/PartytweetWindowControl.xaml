@@ -16,8 +16,9 @@
         <DataGrid Name="PartytweetDataGrid" 
                           Grid.Row="1" AutoGenerateColumns="False" 
                           ItemsSource="{Binding Path=AllPartytweets}"  
-                          SelectedItem="{Binding Path=IsSelectedPartyTweet}"
-                          EnableRowVirtualization="False">
+                          SelectedItem="{Binding Path=IsSelectedPartyTweet, Mode=TwoWay}"
+                          EnableRowVirtualization="False"
+                          IsReadOnly="True">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding DoubleClickCommand}"

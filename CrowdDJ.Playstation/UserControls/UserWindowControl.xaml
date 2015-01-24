@@ -24,9 +24,9 @@
                 </Grid.RowDefinitions>
                 <DataGrid Name="UserDataGrid" 
                           Grid.Row="0" AutoGenerateColumns="False" 
-                          ItemsSource="{Binding Path=AllUser}"  
-                          SelectedItem="{Binding Path=IsSelectedUser}"
-                          EnableRowVirtualization="False">
+                          ItemsSource="{Binding Path=AllUser, Mode=TwoWay}"  
+                          SelectedItem="{Binding Path=IsSelectedUser, Mode=TwoWay}"
+                          CanUserReorderColumns="False">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
                             <i:InvokeCommandAction Command="{Binding DoubleClickCommand}"
@@ -51,7 +51,8 @@
                             Width="120" Margin="2" Command="{Binding UpdateUserCommand}"
                             CommandParameter="{Binding ElementName=UserDataGrid, Path=SelectedItem}"/>
                     <Button Grid.Column="2" Name="bttnDeleteUser" Content="Benutzer löschen" 
-                            Width="120" Margin="2" Command="{Binding DeleteUserCommand}"/>
+                            Width="120" Margin="2" Command="{Binding DeleteUserCommand}"
+                            CommandParameter="{Binding ElementName=UserDataGrid, Path=SelectedItem}"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -66,10 +67,11 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0" HorizontalAlignment="Center" Content="An Partys teilgenommen"/>
-            <DataGrid Grid.Row="1" AutoGenerateColumns="False" 
-                      ItemsSource="{Binding Path=AttemptedParties, Mode=OneWay, IsAsync=True}" Margin="5,0,0,5" >
+            <DataGrid Name="PartylistGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
+                      ItemsSource="{Binding Path=AttemptedParties, Mode=TwoWay, IsAsync=True}" Margin="5,0,0,5" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="PartyID" Binding="{Binding Path=PartyId}" Width="auto" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="auto" />
@@ -78,26 +80,31 @@
                 </DataGrid.Columns>
             </DataGrid>
             <Button Grid.Row="2" Name="bttnDeleteFromParty" Content="Von Party löschen" 
-                    MaxWidth="150" Margin="2"/>
+                    MaxWidth="150" Margin="2" Command="{Binding DeleteUserFromPartyCommand}"
+                            CommandParameter="{Binding ElementName=PartylistGrid, Path=SelectedItem}"/>
             <Label Grid.Row="3" HorizontalAlignment="Center" Content="Gesendete Partytweets"/>
-            <DataGrid Grid.Row="4" ItemsSource="{Binding Path=SentPartyTweets, Mode=OneWay, IsAsync=True}" AutoGenerateColumns="False" Margin="5,5,0,5">
+            <DataGrid Name="PartytweetDataGrid" Grid.Row="4" ItemsSource="{Binding Path=SentPartyTweets, Mode=TwoWay, IsAsync=True}"
+                      SelectedItem="{Binding Path=IsSelectedTweet}" 
+                      AutoGenerateColumns="False" Margin="5,5,0,5" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="PartyID" Binding="{Binding Path=PartyId}" Width="auto" />
                     <DataGridTextColumn Header="Nachricht" Binding="{Binding Path=Message}" Width="auto" />
                 </DataGrid.Columns>
             </DataGrid>
             <Button Grid.Row="5" Name="bttnDeleteTweet" Content="Partytweet löschen" 
-                     MaxWidth="150" Margin="2"/>
+                     MaxWidth="150" Margin="2"  Command="{Binding DeletePartytweetCommand}"
+                            CommandParameter="{Binding ElementName=PartytweetDataGrid, Path=SelectedItem}"/>
             <Label Grid.Row="6" HorizontalAlignment="Center" Content="Gewunschene / Gewählte Tracks" />
-            <DataGrid Grid.Row="7" ItemsSource="{Binding Path=VotedTracks, Mode=TwoWay, IsAsync=True}" AutoGenerateColumns="False" Margin="5,5,0,0">
+            <DataGrid Grid.Row="7" ItemsSource="{Binding Path=VotedTracks, Mode=TwoWay, IsAsync=True}" 
+                      IsReadOnly="True" AutoGenerateColumns="False" Margin="5,5,0,0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Titel" Binding="{Binding Path=Title}" Width="auto" />
                     <DataGridTextColumn Header="Artist" Binding="{Binding Path=Artist}" Width="auto" />
-                    <DataGridTextColumn Header="Länge" Binding="{Binding Path=Length}" Width="auto" />
                     <DataGridTextColumn Header="Genre" Binding="{Binding Path=Genre}" Width="auto" />
-                    <DataGridTextColumn Header="Video" Binding="{Binding Path=IsVideo}" Width="auto" />
                 </DataGrid.Columns>
             </DataGrid>
+            <Button Grid.Row="8" Content="Sicht Aktualisieren" Command="{Binding Path=UpdateUserViewCommand}"
+                    MaxWidth="150" Margin="4"/>
         </Grid>
     </Grid>
 </UserControl>

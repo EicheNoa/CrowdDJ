@@ -85,25 +85,46 @@ namespace CrowdDJ.DAO
         #region public methods
         public bool AddParty(Party newParty)
         {
-            using (DbCommand cmd = CreateInsertCmd(newParty))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateInsertCmd(newParty))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool UpdateParty(Party party, string id)
         {
-            using (DbCommand cmd = CreateUpdateCmd(party, id))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateUpdateCmd(party, id))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool RemovePartyWithId(String partyId)
         {
-            using (DbCommand cmd = CreateDeleteCmd(partyId))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateDeleteCmd(partyId))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 

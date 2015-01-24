@@ -22,6 +22,7 @@ namespace CrowdDJ.SimpleVote
     {
         public string Email { get; set; }
         public string PartyId { get; set; }
+        public User LogUser { get; set; }
 
         private Party selectedParty;
         public Party SelectedParty
@@ -47,15 +48,12 @@ namespace CrowdDJ.SimpleVote
         {
             get { return allParties; }
             set { allParties = value; OnPropertyChanged("AllParties"); }
-        }
-
-        private User user;
-        
+        }        
 
         public ICommand ExitSimpleVoteCommand { get; private set; }
-        public ICommand LogInGuestCommand { get; private set; } 
+        public ICommand LogInGuestCommand { get; private set; }
 
-        private ICrowdDJBL bl = new CrowdDJBL();
+        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
 
         public SimpleVoteVM()
         {
@@ -67,22 +65,33 @@ namespace CrowdDJ.SimpleVote
 
         private void LogInGuest(object obj)
         {
-            if (bl.FindUserByEmail(Email) == null || bl.FindPartyById(PartyId) == null)
+            try
             {
-                MessageBoxResult result = MessageBox.Show("Benutzer nicht vorhanden", "Error",
-                                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                if (Email == null || PartyId == null)
+                {
+                    ErrorMsg(0);
+                }
+                else if (!bl.PartyIsVisitedByGuest(bl.FindUserByEmail(Email).UserId, PartyId))
+                {
+                    ErrorMsg(2);
+                }
+                else
+                {
+                    LogUser = bl.FindUserByEmail(Email);
+                    Window window = new SimpleVoteUserWindow(PartyId, LogUser.UserId);
+                    window.Show();
+                    Application.Current.Windows[0].Close();
+                }
             }
-            else
+            catch (Exception)
             {
-                Window window = new SimpleVoteUserWindow(PartyId);
-                window.Show();
-                Application.Current.Windows[0].Close();
+                ErrorMsg(1);
             }
         }
 
         private void ExitSimpleVote(object obj)
         {
-            Application.Current.Windows[0].Close();
+            Application.Current.Shutdown(0);
         }
 
         private void UpdateQRCode()
@@ -93,6 +102,26 @@ namespace CrowdDJ.SimpleVote
             cur = qrCode.GetGraphic(20);
             QrPicture = BitMapConverter.ToWpfBitmap(cur);
         
+        }
+
+        private void ErrorMsg(int erroNr)
+        {
+            MessageBoxResult result;
+            switch (erroNr)
+            {
+                case 0:
+                    result = MessageBox.Show("Bitte alle Felder ausfüllen!", "Error",
+                                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+                case 1:
+                    result = MessageBox.Show("Benutzer / Party nicht vorhanden!", "Error",
+                                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;
+                case 2:
+                    result = MessageBox.Show("Benutzer ist nicht eingeladen!", "Error",
+                                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    break;                    
+            }
         }
 
         

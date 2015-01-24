@@ -9,6 +9,7 @@ namespace CrowdDJ.DomainClasses
     [Serializable]
     public class Vote
     {
+        public Vote() { }
         public Vote(int userId, int playlistId, int trackId, string ts_created)
         {
             UserId = userId;

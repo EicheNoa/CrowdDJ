@@ -46,10 +46,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CrowdDJ.DAL\CrowdDJ.DAL.csproj">
-      <Project>{bd28be2f-21b4-4bee-821e-43d1c03b39d6}</Project>
-      <Name>CrowdDJ.DAL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CrowdDJ.DAO\CrowdDJ.DAO.csproj">
       <Project>{595cfb23-1682-450d-9cf7-998f6fd3eecf}</Project>
       <Name>CrowdDJ.DAO</Name>

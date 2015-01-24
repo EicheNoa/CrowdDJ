@@ -97,10 +97,6 @@
       <Project>{0aa70c8f-7a39-452f-a339-6ec49cd8e7a1}</Project>
       <Name>CrowdDJ.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CrowdDJ.DAL\CrowdDJ.DAL.csproj">
-      <Project>{bd28be2f-21b4-4bee-821e-43d1c03b39d6}</Project>
-      <Name>CrowdDJ.DAL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CrowdDJ.DomainClasses\CrowdDJ.DomainClasses.csproj">
       <Project>{ba2552d2-829c-49aa-9443-2f0cdb69b720}</Project>
       <Name>CrowdDJ.DomainClasses</Name>

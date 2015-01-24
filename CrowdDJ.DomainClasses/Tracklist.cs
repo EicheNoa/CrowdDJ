@@ -9,6 +9,7 @@ namespace CrowdDJ.DomainClasses
     [Serializable]
     public class Tracklist
     {
+        public Tracklist() { }
         public Tracklist(int playlistId, int userId, int trackId)
         {
             PlaylistId = playlistId;

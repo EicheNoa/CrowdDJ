@@ -15,10 +15,10 @@ namespace CrowdDJ.DAO
 {
     public class TrackDAO : ITrack
     {
-        const string CmdInsert = @"INSERT INTO [dbo].[Track] (title, artist, url, length, genre, isVideo) 
-                                          VALUES (@pTitle, @pArtist, @pUrl, @pLength, @pGenre, @pIsVideo)";
+        const string CmdInsert = @"INSERT INTO [dbo].[Track] (title, artist, url, genre, isVideo) 
+                                          VALUES (@pTitle, @pArtist, @pUrl, @pGenre, @pIsVideo)";
         const string CmdDelete = @"DELETE FROM [dbo].[Track] WHERE trackId = @pTrackId";
-        const string CmdUpdate = @"UPDATE [dbo].[Track] SET title = @pTitle, artist = @pArtist, url = @pUrl, length = @pLength,
+        const string CmdUpdate = @"UPDATE [dbo].[Track] SET title = @pTitle, artist = @pArtist, url = @pUrl,
                                                             genre = @pGenre, isVideo = @pIsVideo
                                     WHERE trackId = @pOldTrackId";
         const string CmdSearchTitle = @"SELECT * FROM [dbo].[Track] WHERE isVideo = false";
@@ -42,7 +42,6 @@ namespace CrowdDJ.DAO
             database.DefineParameter(cmd, "@pTitle", DbType.String, newTrack.Title);
             database.DefineParameter(cmd, "@pArtist", DbType.String, newTrack.Artist);
             database.DefineParameter(cmd, "@pUrl", DbType.String, newTrack.Url);
-            database.DefineParameter(cmd, "@pLength", DbType.Int32, newTrack.Length);
             database.DefineParameter(cmd, "@pGenre", DbType.String, newTrack.Genre);
             database.DefineParameter(cmd, "@pIsVideo", DbType.String, newTrack.IsVideo);
             return cmd;
@@ -59,7 +58,6 @@ namespace CrowdDJ.DAO
             database.DefineParameter(cmd, "@pTitle", DbType.String, updateTrack.Title);
             database.DefineParameter(cmd, "@pArtist", DbType.String, updateTrack.Artist);
             database.DefineParameter(cmd, "@pUrl", DbType.String, updateTrack.Url);
-            database.DefineParameter(cmd, "@pLength", DbType.Int32, updateTrack.Length);
             database.DefineParameter(cmd, "@pGenre", DbType.String, updateTrack.Genre);
             database.DefineParameter(cmd, "@pIsVideo", DbType.String, updateTrack.IsVideo);
             database.DefineParameter(cmd, "@pOldTrackId", DbType.Int32, oldId);
@@ -102,25 +100,46 @@ namespace CrowdDJ.DAO
 
         public bool InsertTrack(Track newTrack)
         {
-            using (DbCommand cmd = CreateInsertCmd(newTrack))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateInsertCmd(newTrack))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool RemoveTrackWithId(int deleteTrackId)
         {
-            using (DbCommand cmd = CreateDeleteCmd(deleteTrackId))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateDeleteCmd(deleteTrackId))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool UpdateTrack(Track updatedTrack, int oldId)
         {
-            using (DbCommand cmd = CreateUpdateCmd(updatedTrack, oldId))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateUpdateCmd(updatedTrack, oldId))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -131,7 +150,6 @@ namespace CrowdDJ.DAO
             string rTitle = "";
             string rArtist = "";
             string rUrl = "";
-            int rLength = 0;
             string rGenre = "";
             bool rIsVideo = false;
 
@@ -140,15 +158,14 @@ namespace CrowdDJ.DAO
             {
                 while (rDr.Read())
                 {
-                            rTrackId = rDr.GetInt32(0);
-                            rTitle = rDr.GetString(1);
-                            rArtist = rDr.GetString(2);
-                            rUrl = rDr.GetString(3);
-                            rLength = rDr.GetInt32(4);
-                            rGenre = rDr.GetString(5);
-                            rIsVideo = rDr.GetBoolean(6);
-                            track = new Track(rTitle, rArtist, rUrl, rLength, rGenre, rIsVideo);
-                            track.TrackId = rTrackId;
+                    rTrackId = rDr.GetInt32(0);
+                    rTitle = rDr.GetString(1);
+                    rArtist = rDr.GetString(2);
+                    rUrl = rDr.GetString(3);
+                    rGenre = rDr.GetString(4);
+                    rIsVideo = rDr.GetBoolean(5);
+                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
+                    track.TrackId = rTrackId;
                  }
             }
             return track;
@@ -162,7 +179,6 @@ namespace CrowdDJ.DAO
             string rTitle = "";
             string rArtist = "";
             string rUrl = "";
-            int rLength = 0;
             string rGenre = "";
             bool rIsVideo = false;
 
@@ -175,10 +191,9 @@ namespace CrowdDJ.DAO
                     rTitle = rDr.GetString(1);
                     rArtist = rDr.GetString(2);
                     rUrl = rDr.GetString(3);
-                    rLength = rDr.GetInt32(4);
-                    rGenre = rDr.GetString(5);
-                    rIsVideo = rDr.GetBoolean(6);
-                    track = new Track(rTitle, rArtist, rUrl, rLength, rGenre, rIsVideo);
+                    rGenre = rDr.GetString(4);
+                    rIsVideo = rDr.GetBoolean(5);
+                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
                     track.TrackId = rTrackId;
                     result.Add(track);
                 }
@@ -194,7 +209,6 @@ namespace CrowdDJ.DAO
             string rTitle = "";
             string rArtist = "";
             string rUrl = "";
-            int rLength = 0;
             string rGenre = "";
             bool rIsVideo = false;
 
@@ -207,10 +221,9 @@ namespace CrowdDJ.DAO
                     rTitle = rDr.GetString(1);
                     rArtist = rDr.GetString(2);
                     rUrl = rDr.GetString(3);
-                    rLength = rDr.GetInt32(4);
-                    rGenre = rDr.GetString(5);
-                    rIsVideo = rDr.GetBoolean(6);
-                    track = new Track(rTitle, rArtist, rUrl, rLength, rGenre, rIsVideo);
+                    rGenre = rDr.GetString(4);
+                    rIsVideo = rDr.GetBoolean(5);
+                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
                     track.TrackId = rTrackId;
                     result.Add(track);
                 }
@@ -227,7 +240,6 @@ namespace CrowdDJ.DAO
             string rTitle = "";
             string rArtist = "";
             string rUrl = "";
-            int rLength = 0;
             string rGenre = "";
             bool rIsVideo = false;
 
@@ -240,10 +252,9 @@ namespace CrowdDJ.DAO
                     rTitle = rDr.GetString(1);
                     rArtist = rDr.GetString(2);
                     rUrl = rDr.GetString(3);
-                    rLength = rDr.GetInt32(4);
-                    rGenre = rDr.GetString(5);
-                    rIsVideo = rDr.GetBoolean(6);
-                    track = new Track(rTitle, rArtist, rUrl, rLength, rGenre, rIsVideo);
+                    rGenre = rDr.GetString(4);
+                    rIsVideo = rDr.GetBoolean(5);
+                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
                     track.TrackId = rTrackId;
                     result.Add(track);
                 }
@@ -259,7 +270,6 @@ namespace CrowdDJ.DAO
             string rTitle = "";
             string rArtist = "";
             string rUrl = "";
-            int rLength = 0;
             string rGenre = "";
             bool rIsVideo = false;
 
@@ -272,10 +282,9 @@ namespace CrowdDJ.DAO
                     rTitle = rDr.GetString(1);
                     rArtist = rDr.GetString(2);
                     rUrl = rDr.GetString(3);
-                    rLength = rDr.GetInt32(4);
-                    rGenre = rDr.GetString(5);
-                    rIsVideo = rDr.GetBoolean(6);
-                    track = new Track(rTitle, rArtist, rUrl, rLength, rGenre, rIsVideo);
+                    rGenre = rDr.GetString(4);
+                    rIsVideo = rDr.GetBoolean(5);
+                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
                     track.TrackId = rTrackId;
                     result.Add(track);
                 }
@@ -291,7 +300,6 @@ namespace CrowdDJ.DAO
             string rTitle = "";
             string rArtist = "";
             string rUrl = "";
-            int rLength = 0;
             string rGenre = "";
             bool rIsVideo = false;
 
@@ -304,10 +312,9 @@ namespace CrowdDJ.DAO
                     rTitle = rDr.GetString(1);
                     rArtist = rDr.GetString(2);
                     rUrl = rDr.GetString(3);
-                    rLength = rDr.GetInt32(4);
-                    rGenre = rDr.GetString(5);
-                    rIsVideo = rDr.GetBoolean(6);
-                    track = new Track(rTitle, rArtist, rUrl, rLength, rGenre, rIsVideo);
+                    rGenre = rDr.GetString(4);
+                    rIsVideo = rDr.GetBoolean(5);
+                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
                     track.TrackId = rTrackId;
                     result.Add(track);
                 }

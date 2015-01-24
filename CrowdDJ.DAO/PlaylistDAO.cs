@@ -20,9 +20,9 @@ namespace CrowdDJ.DAO
         const string CmdUpdatePlaylist = @"UPDATE [dbo].[Playlist] SET playlistId = @pNewPlaylistId, name = @pName
                                           WHERE playlistId = @pOldPlaylistId";
         const string CmdGetPlaylistForParty = @"SELECT * FROM [dbo].[Playlist] WHERE partyId = @pPartyId";
-        const string CmdGetAllTracksInPlaylist = @"SELECT t.trackId, t.title, t.artist, t.url, t.length, t.genre, t.isVideo 
+        const string CmdGetAllTracksForParty = @"SELECT t.trackId, t.title, t.artist, t.url, t.genre, t.isVideo 
                                                    FROM [dbo].[Playlist] pl, [dbo].[Tracklist] tl, [dbo].[Track] t
-                                                   WHERE pl.playlistId = @pPlaylistId AND 
+                                                   WHERE pl.partyId = @pPartyId AND 
                                                          pl.playlistId = tl.playlistId AND tl.trackId = t.trackId";
         const string CmdGetAllPlaylists = @"SELECT * FROM [dbo].[Playlist]";
 
@@ -60,10 +60,10 @@ namespace CrowdDJ.DAO
             database.DefineParameter(cmd, "@pPartyId", DbType.String, id);
             return cmd;
         }
-        private DbCommand CreateGetAllTracksInPlaylistCmd(int id)
+        private DbCommand CreateGetAllTracksForPartyCmd(string id)
         {
-            DbCommand cmd = database.CreateCommand(CmdGetAllTracksInPlaylist);
-            database.DefineParameter(cmd, "@pPlaylistId", DbType.Int32, id);
+            DbCommand cmd = database.CreateCommand(CmdGetAllTracksForParty);
+            database.DefineParameter(cmd, "@pPartyId", DbType.String, id);
             return cmd;
         }
         private DbCommand CreateGetAllPlaylistsCmd()
@@ -76,25 +76,46 @@ namespace CrowdDJ.DAO
         #region public methods
         public bool InsertPlaylist(Playlist newPlaylist)
         {
-            using (DbCommand cmd = CreateInsertPlaylistCmd(newPlaylist))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateInsertPlaylistCmd(newPlaylist))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool DeletePlaylist(int deletePlaylistId)
         {
-            using (DbCommand cmd = CreateDeletePlaylistCmd(deletePlaylistId))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateDeletePlaylistCmd(deletePlaylistId))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool UpdatePlaylist(int oldId, Playlist updatedPlaylist)
         {
-            using (DbCommand cmd = CreateUpdatePlaylistCmd(oldId, updatedPlaylist))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateUpdatePlaylistCmd(oldId, updatedPlaylist))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -120,7 +141,7 @@ namespace CrowdDJ.DAO
             return result;
         }
 
-        public ObservableCollection<Track> GetAllTracksInPlaylist(int playlistId)
+        public ObservableCollection<Track> GetAllTracksForParty(string partyId)
         {
             ObservableCollection<Track> result = new ObservableCollection<Track>();
             Track track = null;
@@ -128,11 +149,10 @@ namespace CrowdDJ.DAO
             string rTitle = "";
             string rArtist = "";
             string rUrl = "";
-            int rLength = 0;
             string rGenre = "";
             bool rIsVideo = false;
 
-            using (DbCommand cmd = CreateGetAllTracksInPlaylistCmd(playlistId))
+            using (DbCommand cmd = CreateGetAllTracksForPartyCmd(partyId))
             using (IDataReader rDr = database.ExecuteReader(cmd))
             {
                 while (rDr.Read())
@@ -141,10 +161,9 @@ namespace CrowdDJ.DAO
                     rTitle = rDr.GetString(1);
                     rArtist = rDr.GetString(2);
                     rUrl = rDr.GetString(3);
-                    rLength = rDr.GetInt32(4);
-                    rGenre = rDr.GetString(5);
-                    rIsVideo = rDr.GetBoolean(6);
-                    track = new Track(rTitle, rArtist, rUrl, rLength, rGenre, rIsVideo);
+                    rGenre = rDr.GetString(4);
+                    rIsVideo = rDr.GetBoolean(5);
+                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
                     track.TrackId = rTrackId;
                     result.Add(track);
                 }

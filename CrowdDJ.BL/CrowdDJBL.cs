@@ -8,11 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using CrowdDJ.DomainClasses;
 
 namespace CrowdDJ.BL
 {
     public class CrowdDJBL : ICrowdDJBL
     {
+        private static ICrowdDJBL bl;
         private IDataBase database = null;
         private IGuest guest = null;
         private IParty party = null;
@@ -23,7 +25,7 @@ namespace CrowdDJ.BL
         private IUser user = null;
         private IVote vote = null;
 
-        public CrowdDJBL()
+        private CrowdDJBL()
         {
             string s = ConfigurationManager.ConnectionStrings["CrowdDJ.Properties.Settings.CrowdDJDBConnectionString"].ConnectionString;
             database = new DataBase(s);
@@ -35,6 +37,12 @@ namespace CrowdDJ.BL
             tracklist = new TracklistDAO(database);
             user = new UserDAO(database);
             vote = new VoteDAO(database);
+        }
+        public static ICrowdDJBL GetCrowdDJBL()
+        {
+            if (bl == null)
+                bl = new CrowdDJBL();
+            return bl;
         }
 
         #region Guest
@@ -73,7 +81,7 @@ namespace CrowdDJ.BL
         {
             return party.UpdateParty(updateParty, id);
         }
-        public DomainClasses.Party FindPartyById(string partyId)
+        public Party FindPartyById(string partyId)
         {
             return party.FindPartyById(partyId);
         }
@@ -124,19 +132,19 @@ namespace CrowdDJ.BL
             return playlist.DeletePlaylist(id);
         }
 
-        public bool UpdatePlaylist(int id, DomainClasses.Playlist updatedPlaylist)
+        public bool UpdatePlaylist(int id, Playlist updatedPlaylist)
         {
             return playlist.UpdatePlaylist(id, updatedPlaylist);
         }
 
-        public DomainClasses.Playlist GetPlaylistForParty(string id)
+        public Playlist GetPlaylistForParty(string id)
         {
             return playlist.GetPlaylistForParty(id);
         }
 
-        public ObservableCollection<DomainClasses.Track> GetAllTracksInPlaylist(int playlistId)
+        public ObservableCollection<DomainClasses.Track> GetAllTracksForParty(string partyId)
         {
-            return playlist.GetAllTracksInPlaylist(playlistId);
+            return playlist.GetAllTracksForParty(partyId);
         }
 
         public ObservableCollection<DomainClasses.Playlist> GetAllPlaylists()
@@ -146,7 +154,7 @@ namespace CrowdDJ.BL
         #endregion
 
         #region Track
-        public bool InsertTrack(DomainClasses.Track newTrack)
+        public bool InsertTrack(Track newTrack)
         {
             return track.InsertTrack(newTrack);
         }
@@ -156,54 +164,54 @@ namespace CrowdDJ.BL
             return track.RemoveTrackWithId(id);
         }
 
-        public bool UpdateTrack(DomainClasses.Track updateTrack, int id)
+        public bool UpdateTrack(Track updateTrack, int id)
         {
             return track.UpdateTrack(updateTrack, id);
         }
 
-        public DomainClasses.Track FindTrackById(int id)
+        public Track FindTrackById(int id)
         {
             return track.FindTrackById(id);
         }
 
-        public ObservableCollection<DomainClasses.Track> FindTrackWithTitle(string title)
+        public ObservableCollection<Track> FindTrackWithTitle(string title)
         {
             return track.FindTrackWithTitle(title);
         }
 
-        public ObservableCollection<DomainClasses.Track> FindTracksInGenre(string genre)
+        public ObservableCollection<Track> FindTracksInGenre(string genre)
         {
             return track.FindTracksInGenre(genre);
         }
 
-        public ObservableCollection<DomainClasses.Track> FindVideos()
+        public ObservableCollection<Track> FindVideos()
         {
             return track.FindVideos();
         }
 
-        public ObservableCollection<DomainClasses.Track> FindSongs()
+        public ObservableCollection<Track> FindSongs()
         {
             return track.FindSongs();
         }
 
-        public ObservableCollection<DomainClasses.Track> GetAllTracks()
+        public ObservableCollection<Track> GetAllTracks()
         {
             return track.GetAllTracks();
         }
         #endregion
 
         #region Tracklist
-        public bool InsertIntoTracklist(DomainClasses.Tracklist insertIntoTracklist)
+        public bool InsertIntoTracklist(Tracklist insertIntoTracklist)
         {
             return tracklist.InsertIntoTracklist(insertIntoTracklist);
         }
 
-        public ObservableCollection<DomainClasses.Track> GetTracksRecommendedByUser(int userId)
+        public ObservableCollection<Track> GetTracksRecommendedByUser(int userId)
         {
             return tracklist.GetTracksRecommendedByUser(userId);
         }
 
-        public ObservableCollection<DomainClasses.Tracklist> GetAllTracklists()
+        public ObservableCollection<Tracklist> GetAllTracklists()
         {
             return tracklist.GetAllTracklists();
         }
@@ -225,18 +233,22 @@ namespace CrowdDJ.BL
             return user.UpdateUser(updateUser, id);
         }
 
-        public ObservableCollection<DomainClasses.User> GetAllUser()
+        public ObservableCollection<User> GetAllUser()
         {
             return user.GetAllUser();
         }
 
-        public DomainClasses.User FindUserById(int id)
+        public User FindUserById(int id)
         {
             return user.FindUserById(id);
         }
-        public DomainClasses.User FindUserByEmail(string email)
+        public User FindUserByEmail(string email)
         {
             return user.FindUserByEmail(email);
+        }
+        public List<KeyValuePair<string, bool>> GetAllEmails()
+        {
+            return user.GetAllEMails();
         }
         #endregion
 
@@ -256,5 +268,6 @@ namespace CrowdDJ.BL
             return vote.GetVotesForTrack(trackId, playlistId);
         }
         #endregion //Vote
+
     }
 }

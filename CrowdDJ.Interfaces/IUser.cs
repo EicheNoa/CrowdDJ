@@ -16,5 +16,6 @@ namespace CrowdDJ.Interfaces
         ObservableCollection<User> GetAllUser();
         User FindUserById(int id);
         User FindUserByEmail(string email);
+        List<KeyValuePair<string, bool>> GetAllEMails();
     }
 }

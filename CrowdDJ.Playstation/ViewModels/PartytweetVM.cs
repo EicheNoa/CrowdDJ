@@ -24,7 +24,7 @@ namespace CrowdDJ.Playstation.ViewModels
         public ICommand DoubleClickCommand { get; set; }
         public ICommand DeletePartytweetCommand { get; set; }
 
-        private ICrowdDJBL bl = new CrowdDJBL();
+        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
 
         public PartytweetVM()
         {
@@ -35,6 +35,7 @@ namespace CrowdDJ.Playstation.ViewModels
 
         private void DeletePartytweet(object obj)
         {
+            SetSelectedPartytweet(obj as Partytweet);
             if ((IsSelectedPartytweet != null) && (IsSelectedPartytweet == obj as Partytweet))
             {
                 bl.DeletePartytweet(IsSelectedPartytweet);
@@ -42,8 +43,9 @@ namespace CrowdDJ.Playstation.ViewModels
             } 
             else 
             {
-                MessageBoxResult result = MessageBox.Show("Keine Zeile ausgewählt! Bitte einen Doppelklick auf eine Zeile!", "Fehler...",
-                                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxResult result = MessageBox.Show(
+                    "Keine Zeile ausgewählt! Bitte einen Doppelklick auf eine Zeile!", "Fehler...",
+                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

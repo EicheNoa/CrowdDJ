@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDJ", "CrowdDJ\CrowdDJ.csproj", "{AABE1805-3369-4D29-A624-7E39CB8A6ACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDJ.DAL", "CrowdDJ.DAL\CrowdDJ.DAL.csproj", "{BD28BE2F-21B4-4BEE-821E-43D1C03B39D6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDJ.DAO", "CrowdDJ.DAO\CrowdDJ.DAO.csproj", "{595CFB23-1682-450D-9CF7-998F6FD3EECF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDJ.DomainClasses", "CrowdDJ.DomainClasses\CrowdDJ.DomainClasses.csproj", "{BA2552D2-829C-49AA-9443-2F0CDB69B720}"
@@ -21,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDJ.QRCode", "CrowdDJ.Q
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDJ.SimpleVote", "CrowdDJ.SimpleVote\CrowdDJ.SimpleVote.csproj", "{076FB4B8-D82C-472C-AD5A-055EC3D1FA72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrowdDJ.WebService", "CrowdDJ.WebService\CrowdDJ.WebService.csproj", "{A50219CF-5E35-4942-A1E6-3434CF4082FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,10 +31,6 @@ Global
 		{AABE1805-3369-4D29-A624-7E39CB8A6ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AABE1805-3369-4D29-A624-7E39CB8A6ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AABE1805-3369-4D29-A624-7E39CB8A6ACB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD28BE2F-21B4-4BEE-821E-43D1C03B39D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD28BE2F-21B4-4BEE-821E-43D1C03B39D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD28BE2F-21B4-4BEE-821E-43D1C03B39D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD28BE2F-21B4-4BEE-821E-43D1C03B39D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{595CFB23-1682-450D-9CF7-998F6FD3EECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{595CFB23-1682-450D-9CF7-998F6FD3EECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{595CFB23-1682-450D-9CF7-998F6FD3EECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,6 +59,10 @@ Global
 		{076FB4B8-D82C-472C-AD5A-055EC3D1FA72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{076FB4B8-D82C-472C-AD5A-055EC3D1FA72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{076FB4B8-D82C-472C-AD5A-055EC3D1FA72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A50219CF-5E35-4942-A1E6-3434CF4082FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A50219CF-5E35-4942-A1E6-3434CF4082FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A50219CF-5E35-4942-A1E6-3434CF4082FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A50219CF-5E35-4942-A1E6-3434CF4082FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

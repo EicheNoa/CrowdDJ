@@ -19,10 +19,10 @@ namespace CrowdDJ.SimpleVote.SimpleVoteUser
     /// </summary>
     public partial class SimpleVoteUserWindow : Window
     {
-        public SimpleVoteUserWindow(string PartyId)
+        public SimpleVoteUserWindow(string partyId, int userId)
         {
             InitializeComponent();
-            this.DataContext = new SimpleVoterUserVM(PartyId);
+            this.DataContext = new SimpleVoterUserVM(partyId, userId);
         }
     }
 }

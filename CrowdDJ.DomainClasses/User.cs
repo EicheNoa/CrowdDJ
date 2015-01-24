@@ -9,12 +9,12 @@ namespace CrowdDJ.DomainClasses
     [Serializable]
     public class User
     {
-
+        public User() { }
         public User(string name, string password, string email, bool isAdmin)
         {
             Name = name;
             Email = email;
-            Password = password;
+            Password = password.GetHashCode().ToString();
             IsAdmin = isAdmin;
         }
 

@@ -15,9 +15,6 @@ namespace CrowdDJ.DAO
 {
     public class PartytweetDAO : IPartytweet
     {
-        //string connectionString = ConfigurationManager.ConnectionStrings["CrowdDJ.Properties.Settings.CrowdDJDBConnectionString"].ConnectionString;
-        string connectionString = "";
-
         const string CmdInsert = @"INSERT INTO [dbo].[Partytweet] (userId, partyId, message) VALUES (@pUserId, @pPartyId, @pMessage)";
         const string CmdDelete = @"DELETE FROM [dbo].[Partytweet] WHERE partyId = @pPartyId AND UserId = @pUserId";
         const string CmdGetTweetsForParty = @"SELECT * FROM [dbo].[Partytweet] WHERE partyId = @pPartyId";
@@ -69,22 +66,30 @@ namespace CrowdDJ.DAO
         #region public methods
         public bool AddTweet(Partytweet newPartytweet)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
                 using (DbCommand cmd = CreateInsertCmd(newPartytweet))
                 {
                     return database.ExecuteNonQuery(cmd) == 1;
                 }
             }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public bool DeletePartytweet(Partytweet deletePartytweet)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
                 using (DbCommand cmd = CreateDeleteCmd(deletePartytweet))
                 {
                     return database.ExecuteNonQuery(cmd) == 1;
                 }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
         public ObservableCollection<Partytweet> GetTweetsForParty(string partyId)

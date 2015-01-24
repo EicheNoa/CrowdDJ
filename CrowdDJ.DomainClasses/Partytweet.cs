@@ -9,6 +9,7 @@ namespace CrowdDJ.DomainClasses
     [Serializable]
     public class Partytweet
     {
+        public Partytweet() { }
         public Partytweet(int userId, string partyId, string message)
         {
             UserId = userId;

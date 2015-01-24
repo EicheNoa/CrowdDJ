@@ -9,12 +9,12 @@ namespace CrowdDJ.DomainClasses
     [Serializable]
     public class Track
     {
-        public Track(string title, string artist, string url, int length, string genre, bool isVideo)
+        public Track() { }
+        public Track(string title, string artist, string url, string genre, bool isVideo)
         {
             Title = title;
             Artist = artist;
             Url = url;
-            Length = length;
             Genre = genre;
             IsVideo = isVideo;
         }
@@ -46,13 +46,6 @@ namespace CrowdDJ.DomainClasses
         {
             get { return url; }
             set { url = value; }
-        }
-
-        private int length;
-        public int Length
-        {
-            get { return length; }
-            set { length = value; }
         }
 
         private string genre;

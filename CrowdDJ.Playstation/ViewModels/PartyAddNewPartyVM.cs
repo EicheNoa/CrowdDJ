@@ -2,6 +2,7 @@
 using CrowdDJ.DomainClasses;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using System.Windows.Input;
 
 namespace CrowdDJ.Playstation.ViewModels
 {
-    public class PartyAddNewPartyVM
+    public class PartyAddNewPartyVM : ViewModelBase
     {
         public string PartyId { get; set; }
         public string Name { get; set; }
@@ -22,7 +23,7 @@ namespace CrowdDJ.Playstation.ViewModels
         public ICommand AddPartyCommand { get; private set; }
         public ICommand CancelAddPartyCommand { get; private set; }
 
-        private ICrowdDJBL bl = new CrowdDJBL();
+        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
 
         public PartyAddNewPartyVM()
         {
@@ -32,15 +33,25 @@ namespace CrowdDJ.Playstation.ViewModels
 
         private void CancelAddParty(object obj)
         {
-            Application.Current.Windows[1].Close();
+            CloseWindow("CrowdDJ.Playstation.Views.PartyAddNewPartyWindow");
         }
 
         private void AddParty(object obj)
         {
-            bl.AddParty(new Party(PartyId, Name, Location, Host, PartyBegin, PartyEnd, IsActive));
-            Application.Current.Windows[1].Close();
-            MessageBoxResult result = MessageBox.Show("Party wurde hinzugefügt!!", "Gratuliere",
-                                                        MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            MessageBoxResult result;
+            if (PartyId == "" || Host == "" || Name == "" || 
+                Location == "" || PartyBegin == "" || PartyEnd == "")
+            {
+                result = MessageBox.Show("Alle Felder müssen ausgefüllt sein!", "Fehler",
+                                                            MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                bl.AddParty(new Party(PartyId, Name, Location, Host, PartyBegin, PartyEnd, IsActive));
+                CloseWindow("CrowdDJ.Playstation.Views.PartyAddNewPartyWindow");                
+                result = MessageBox.Show("Party wurde hinzugefügt!!", "Gratuliere",
+                                                            MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
     }
 }

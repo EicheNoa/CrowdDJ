@@ -15,89 +15,108 @@ namespace CrowdDJ
     {
         static void Main(string[] args)
         {
-            ICrowdDJBL bl = new CrowdDJBL();
-            User admin = new User("admin", "admin", "admin@admin.admin", true);
-            bl.InsertUser(admin);
+            ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
             int y = 0;
             int z = 0;
-            Random random = new Random();
             bool r;
-            User user = null;
-            for (int i = 1; i < 1000; i++)
+            User user = new User("a", "a", "a", true);
+            bl.InsertUser(user);
+            for (int i = 1; i < 200; i++)
             {
-                if (random.Next(0, 1) == 0)
-                    r = true;
-                else
+                if (z++ < 25)
+                {
                     r = false;
+                }
+                else
+                {
+                    r = true;
+                    z = 0;
+                }
                 user = new User("Peter der " + i + ".", i.ToString(), "ichBinnnnn" + i + "@dar.at", r);
                 bl.InsertUser(user);
             }
+            z = 0;
 
             List<string> partylist = new List<string>();
             string pl;
             Party party = null;
-            for (int i = 1; i < 1000; i++)
+            for (int i = 1; i < 20; i++)
             {
-                if (random.Next(0, 1) == 0)
-                    r = true;
-                else
+                if (z++ < 12)
+                {
                     r = false;
+                }
+                else
+                {
+                    r = true;
+                    z = 0;
+                }
                 pl = "Party numero " + i;
                 partylist.Add(pl);
                 party = new Party(pl, "Die " + i + ". wilde Hilde", "Am Berg " + i, "Susi von der " + i + ".",
                                         (i % 24).ToString() + ".00", (i % 24).ToString() + ".00", r);
                 bl.AddParty(party);
             }
+            z = 0;
 
             Track track = null;
-            for (int i = 5; i < 1000; i++)
-            {
-                if (random.Next(0, 1) == 0)
-                    r = true;
-                else
-                    r = false;
-                track = new Track("Bloodbath Massacre " + i, i.ToString(), "www." + i + ".com", (i % 300), "PoP", r);
-                bl.InsertTrack(track);
-            }
+            track = new Track("Taking Back My Love", "Enrique Iglesias", @"D:\Musik\_Takin' Back My Love_ - Enrique Iglesias feat. Ciara.mp4",
+                                "Pop", true);
+            bl.InsertTrack(track);
+            track = new Track("Airplanes ft Eminem", "Hayley Williams", @"D:\Musik\_Takin' Back My Love_ - Enrique Iglesias feat. Ciara.mp4",
+                                "Pop", true);
+            bl.InsertTrack(track);
+            track = new Track("Nobody's Home", "Avril Lavigne", @"D:\Musik\Avril Lavigne - Nobody's Home (With Lyrics).mp4",
+                                "Pop & Rock", true);
+            bl.InsertTrack(track);
+            track = new Track("Smile", "Avril  Lavigne", @"D:\Musik\Avril Lavigne - Nobody's Home (With Lyrics).mp4",
+                                "Pop & Rock", true);
+            bl.InsertTrack(track);
+            track = new Track("San Francisco", "Cascada", @"D:\Musik\CASCADA - San Francisco (Official Video HD).mp4",
+                                "Dance", true);
+            bl.InsertTrack(track);
+            track = new Track("I Just Had Sex ft Akon", "The Lonely Island", @"D:\Musik\eig\I Just Had Sex (feat. Akon).mp3",
+                                "Pop", false);
+            bl.InsertTrack(track);
+            track = new Track("Written In The Stars", "Tinie Tempah", @"D:\Musik\eig\Tinie Tempah - Written In The Stars ft. Eric Turner.mp3",
+                                "Pop", false);
+            bl.InsertTrack(track);
 
             Guest guest = null;
-            for (int i = 13; i < 500; i++)
+            for (int i = 1; i < 200; i++)
             {
-                guest = new Guest(i, partylist[i]);
+                guest = new Guest(i, partylist[i % 19]);
                 bl.AddGuest(guest);
             }
 
             Partytweet partytweet = null;
-            for (int i = 0; i < 230; i++)
+            for (int i = 1; i < 200; i++)
             {
-                partytweet = new Partytweet((i % 500) + 20, partylist[i], "Meine " + i + "-te Partey!");
+                partytweet = new Partytweet((i % 99), partylist[i % 19], "Meine " + i + "-te Partey!");
                 bl.AddTweet(partytweet);
             }
 
             Playlist playlist = null;
-            for (int i = 100; i < 500; i++)
+            for (int i = 1; i < 200; i++)
             {
-                playlist = new Playlist(partylist[i], "Das Beste im " + i + "er Pack");
+                playlist = new Playlist(partylist[i % 19], "Das Beste im " + i + "er Pack");
                 bl.InsertPlaylist(playlist);
             }
 
             Tracklist tracklist = null;
-            for (int i = 5; i < 10; i++)
+            for (int i = 1; i < 7; i++)
             {
-                Console.WriteLine(z++);
-                tracklist = new Tracklist(i, i + 20, i + 20);
+                tracklist = new Tracklist(1, i, i);
                 bl.InsertIntoTracklist(tracklist);
 
             }
 
             Vote vote = null;
-            //vote = new Vote(15, 20, 20, "900");
-            //bl.InsertVote(vote);
             y = 15;
-            z = 100;
-            for (int i = 5; i < 50; i++, y++, z++)
+            z = 1;
+            for (int i = 1; i < 7; i++)
             {
-                vote = new Vote(y, z, i, (i % 24).ToString() + ".00");
+                vote = new Vote(i, 1, 3, (i % 24).ToString() + ".00");
                 bl.InsertVote(vote);
             }
 

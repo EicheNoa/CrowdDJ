@@ -14,6 +14,23 @@ namespace CrowdDJ.Playstation.ViewModels
 {
     class PartyVM : ViewModelBase
     {
+        private ObservableCollection<User> transformedUser { get; set; }
+        private ObservableCollection<User> collectionAllUser = new ObservableCollection<User>();
+        private ObservableCollection<User> attendingUser;
+        public ObservableCollection<User> AttendingUser
+        {
+            get { return attendingUser; }
+            set { attendingUser = value; OnPropertyChanged("AttendingUser"); }
+        }
+
+        private ObservableCollection<User> allUser;
+        public ObservableCollection<User> AllUser
+        {
+            get { return allUser; }
+            set { allUser = value; OnPropertyChanged("AllUser"); }
+        }
+
+
         private ObservableCollection<Party> allParties;
         public ObservableCollection<Party> AllParties
         {
@@ -21,12 +38,15 @@ namespace CrowdDJ.Playstation.ViewModels
             set { allParties = value; OnPropertyChanged("AllParties"); }
         }
         public Party IsSelectedParty { get; set; }
+        public User IsSelectedAddUser { get; set; }
+        public User IsSelectedAttUser { get; set; }
         public ICommand DeletePartyCommand { get; private set; }
         public ICommand UpdatePartyCommand { get; private set; }
         public ICommand AddNewPartyCommand { get; private set; }
         public ICommand DoubleClickCommand { get; private set; }
+        public ICommand AddUserToPartyCommand { get; private set; }
 
-        private ICrowdDJBL bl = new CrowdDJBL();
+        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
 
         public PartyVM()
         {
@@ -34,13 +54,46 @@ namespace CrowdDJ.Playstation.ViewModels
             this.UpdatePartyCommand = new RelayCommand(this.UpdateParty);
             this.AddNewPartyCommand = new RelayCommand(this.AddParty);
             this.DoubleClickCommand = new RelayCommand(this.SetSelectedParty);
+            this.AddUserToPartyCommand = new RelayCommand(this.AddUserToParty);
             AllParties = bl.GetAllParties();
+            collectionAllUser = bl.GetAllUser();
+            AllUser = collectionAllUser;
             IsSelectedParty = AllParties.First();
+            UpdateViewForParty();
+        }
+
+        private void UpdateViewForParty( )
+        {
+            AllUser = collectionAllUser;
+            AttendingUser = bl.GetGuestlistForParty(IsSelectedParty.PartyId);
+            //foreach (var item in AttendingUser)
+            //{
+            //    AllUser.Remove(item);
+            //}
+            for (int i = AllUser.Count() - 1; i >= 0; i--)
+            {
+                var item = AllUser[i];
+                if (AttendingUser.Contains(item))
+                {
+                    AllUser.RemoveAt(i);
+                }
+            }
+        }
+
+        private void AddUserToParty(object obj)
+        {
+            IsSelectedAddUser = obj as User;
+            if (!bl.PartyIsVisitedByGuest(IsSelectedAddUser.UserId, IsSelectedParty.PartyId))
+            {
+                if (bl.AddGuest(new Guest(IsSelectedAddUser.UserId, IsSelectedParty.PartyId)))
+                    AttendingUser.Add(IsSelectedAddUser);
+            }
         }
 
         private void SetSelectedParty(object obj)
         {
             IsSelectedParty = obj as Party;
+            UpdateViewForParty();
         }
 
         private void AddParty(object obj)
@@ -64,8 +117,9 @@ namespace CrowdDJ.Playstation.ViewModels
             }
             else
             {
-                MessageBoxResult result = MessageBox.Show("Keine Zeile ausgewählt! Bitte einen Doppelklick auf eine Zeile!", "Fehler...",
-                                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBoxResult result = MessageBox.Show(
+                    "Keine Zeile ausgewählt! Bitte einen Doppelklick auf eine Zeile!", "Fehler...",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

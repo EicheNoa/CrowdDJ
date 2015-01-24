@@ -14,7 +14,7 @@ namespace CrowdDJ.Interfaces
         bool DeletePlaylist(int id);
         bool UpdatePlaylist(int id, Playlist updatedPlaylist);
         Playlist GetPlaylistForParty(string id);
-        ObservableCollection<Track> GetAllTracksInPlaylist(int playlistId);
+        ObservableCollection<Track> GetAllTracksForParty(string partyId);
         ObservableCollection<Playlist> GetAllPlaylists();
     }
 }

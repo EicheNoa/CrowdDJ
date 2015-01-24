@@ -40,14 +40,6 @@
             <Label Grid.Column="0" Content="Artist:" HorizontalAlignment="Right" Margin="0,0,5,0"/>
             <TextBox Grid.Column="1" Text="{Binding Path=Artist}" HorizontalAlignment="Left" Margin="5,2,0,2"  Width="120" />
         </Grid>
-        <Grid Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Länge:" HorizontalAlignment="Right" Margin="0,0,5,0"/>
-            <TextBox Grid.Column="1" Text="{Binding Path=Length}" HorizontalAlignment="Left" Margin="5,2,0,2"  Width="120" />
-        </Grid>
         <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

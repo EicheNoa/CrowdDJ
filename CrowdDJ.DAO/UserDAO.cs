@@ -23,6 +23,7 @@ namespace CrowdDJ.DAO
         const string CmdSearch = @"SELECT * FROM [dbo].[User] WHERE userId = @pUserId";
         const string CmdSearchWithEmail = @"SELECT * FROM [dbo].[User] WHERE email = @pEmail";
         const string CmdSelectAll = @"SELECT * FROM [dbo].[User]";
+        const string CmdGetAllEMails = @"SELECT email, isAdmin FROM [dbo].[User]";
 
         private IDataBase database;
 
@@ -71,6 +72,11 @@ namespace CrowdDJ.DAO
         private DbCommand CreateSearchAllCmd()
         {
             DbCommand cmd = database.CreateCommand(CmdSelectAll);
+            return cmd;
+        }
+        private DbCommand CreateGetAllEMailsCmd()
+        {
+            DbCommand cmd = database.CreateCommand(CmdGetAllEMails);
             return cmd;
         }
         #endregion
@@ -173,6 +179,24 @@ namespace CrowdDJ.DAO
                 }
             }
             return user;
+        }
+        public List<KeyValuePair<string, bool>> GetAllEMails()
+        {
+            List<KeyValuePair<string, bool>> result = new List<KeyValuePair<string, bool>>();
+            string rEmail = "";
+            bool rIsAdmin = false;
+
+            using (DbCommand cmd = CreateGetAllEMailsCmd())
+            using (IDataReader rDr = database.ExecuteReader(cmd))
+            {
+                while (rDr.Read())
+                {
+                    rEmail = rDr.GetString(0);
+                    rIsAdmin = rDr.GetBoolean(1);
+                    result.Add(new KeyValuePair<string, bool>(rEmail, rIsAdmin));
+                }
+            }
+            return result;
         }
     }
 }

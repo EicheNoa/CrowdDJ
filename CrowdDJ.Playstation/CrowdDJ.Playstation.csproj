@@ -34,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MyToolkit">
+      <HintPath>..\packages\MyToolkit.2.3.24.0\lib\portable-net45+wp8+win8+wpa81\MyToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="MyToolkit.Extended">
+      <HintPath>..\packages\MyToolkit.Extended.2.3.24.0\lib\net45\MyToolkit.Extended.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -151,6 +157,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -166,12 +173,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\LoveMusic.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Pictures\LoveMusict.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\CrowdDJ.BL\CrowdDJ.BL.csproj">
       <Project>{0aa70c8f-7a39-452f-a339-6ec49cd8e7a1}</Project>
       <Name>CrowdDJ.BL</Name>
@@ -185,7 +186,6 @@
       <Name>CrowdDJ</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
