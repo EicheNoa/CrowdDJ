@@ -40,6 +40,8 @@ namespace CrowdDJ
             List<string> partylist = new List<string>();
             string pl;
             Party party = null;
+            party = new Party("All Songs", "All Songs", "", "", "", "", false);
+            bl.AddParty(party);
             for (int i = 1; i < 20; i++)
             {
                 if (z++ < 12)

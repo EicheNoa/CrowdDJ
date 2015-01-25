@@ -38,7 +38,15 @@ namespace CrowdDJ.Playstation.ViewModels
             {
                 isSelectedParty = value;
                 OnPropertyChanged("IsSelectedParty");
-                UpdateTracks();
+                if (isSelectedParty.Equals(AllParties.First()))
+                {
+                    Tracks = bl.GetAllTracks();
+                }
+                else
+                {
+                    UpdateTracks();
+                }
+                trackIndex = 0;
             }
         }
 
@@ -72,8 +80,6 @@ namespace CrowdDJ.Playstation.ViewModels
             set { volume = value; OnPropertyChanged("Volume"); }
         }
 
-
-
         public ICommand AddNewTrackCommand { get; private set; }
         public ICommand ShowAllTracksCommand { get; private set; }
         public ICommand PlayMediaCommand { get; private set; }
@@ -83,7 +89,6 @@ namespace CrowdDJ.Playstation.ViewModels
         public ICommand NextMediaCommand { get; private set; }
 
         private int trackIndex;
-        private Party previousParty = null;
         private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
         private MediaElement mediaElement = null;
 
@@ -99,11 +104,8 @@ namespace CrowdDJ.Playstation.ViewModels
             this.StopMediaCommand = new RelayCommand(this.StopMedia);
             this.PreviousMediaCommand = new RelayCommand(this.PreviousMedia);
             this.NextMediaCommand = new RelayCommand(this.NextMedia);
-
             AllParties = bl.GetAllParties();
-            previousParty = AllParties.First();
-            IsSelectedParty = previousParty;
-            UpdateTracks();
+            IsSelectedParty = AllParties.First();
             SetCurrentTrack();
         }
 
@@ -112,8 +114,14 @@ namespace CrowdDJ.Playstation.ViewModels
             trackIndex++;
             if (trackIndex >= Tracks.Count())
             {
-                CurrentTrack = new Uri(Tracks.First().Url);
-                trackIndex = 0;
+                try
+                {
+                    CurrentTrack = new Uri(Tracks.First().Url);
+                    trackIndex = 0;
+                }
+                catch (Exception)
+                {   
+                }
             }
             PlayTrack();
         }
@@ -159,15 +167,14 @@ namespace CrowdDJ.Playstation.ViewModels
             Playlist playlist = bl.GetPlaylistForParty(IsSelectedParty.PartyId);
             if (playlist != null)
             {
-                Tracks = bl.GetAllTracksForParty(playlist.PartyId);
-                previousParty = IsSelectedParty;
+                Tracks = bl.GetTracklistSortedVotes(playlist.PlaylistId);
                 SetCurrentTrack();
             }
         }
 
         private void SetCurrentTrack()
         {
-            if (Tracks.Count() > 0)
+            if (Tracks != null && Tracks.Count() > 0)
             {
                 ConvertTrackUri(Tracks.First());
                 trackIndex = 0;

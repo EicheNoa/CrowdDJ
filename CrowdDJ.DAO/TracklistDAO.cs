@@ -20,6 +20,8 @@ namespace CrowdDJ.DAO
                                                        FROM [dbo].[Tracklist] tl, [dbo].[Track] t
                                                        WHERE tl.userId = @pUserId AND t.trackId = tl.trackId";
         const string CmdGetAllTracklists = @"SELECT * FROM [dbo].[Tracklist]";
+        const string CmdFindTrackInTracklist = @"SELECT * FROM [dbo].[Tracklist] WHERE trackId = @pTrackId AND
+                                                          playlistId = @pPlaylistId AND userId = @pUserId";
 
         private IDataBase database;
 
@@ -47,13 +49,56 @@ namespace CrowdDJ.DAO
             DbCommand cmd = database.CreateCommand(CmdGetAllTracklists);
             return cmd;
         }
+        private DbCommand CreateFindTrackInTracklistCmd(Tracklist tracklist)
+        {
+            DbCommand cmd = database.CreateCommand(CmdFindTrackInTracklist);
+            database.DefineParameter(cmd, "@pTrackId", DbType.String, tracklist.TrackId);
+            database.DefineParameter(cmd, "@pPlaylistId", DbType.Int32, tracklist.PlaylistId);
+            database.DefineParameter(cmd, "@pUserId", DbType.Int32, tracklist.UserId);
+            return cmd;
+        }
         #endregion
+
+        public Tracklist FindTrackInTracklist(Tracklist tracklist)
+        {
+            Tracklist tl = null;
+            int rUserId = 0;
+            int rPlaylistId = 0;
+            int rTrackId = 0;
+
+            using (DbCommand cmd = CreateFindTrackInTracklistCmd(tracklist))
+            using (IDataReader rDr = database.ExecuteReader(cmd))
+            {
+                while (rDr.Read())
+                {
+                    rPlaylistId = rDr.GetInt32(0);
+                    rUserId = rDr.GetInt32(1);
+                    rTrackId = rDr.GetInt32(2);
+                    tl = new Tracklist(rPlaylistId, rUserId, rTrackId);
+                }
+            }
+            return tl;
+        }
 
         public bool InsertIntoTracklist(Tracklist insertIntoTracklist)
         {
-            using (DbCommand cmd = CreateInsertIntoTracklistCmd(insertIntoTracklist))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                if (FindTrackInTracklist(insertIntoTracklist) == null)
+                {
+                    using (DbCommand cmd = CreateInsertIntoTracklistCmd(insertIntoTracklist))
+                    {
+                        return database.ExecuteNonQuery(cmd) == 1;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 

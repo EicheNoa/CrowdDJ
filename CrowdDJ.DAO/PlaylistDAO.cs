@@ -78,9 +78,16 @@ namespace CrowdDJ.DAO
         {
             try
             {
-                using (DbCommand cmd = CreateInsertPlaylistCmd(newPlaylist))
+                if (GetPlaylistForParty(newPlaylist.PartyId) == null)
                 {
-                    return database.ExecuteNonQuery(cmd) == 1;
+                    using (DbCommand cmd = CreateInsertPlaylistCmd(newPlaylist))
+                    {
+                        return database.ExecuteNonQuery(cmd) == 1;
+                    }
+                }
+                else
+                {
+                    return false;
                 }
             }
             catch (Exception)

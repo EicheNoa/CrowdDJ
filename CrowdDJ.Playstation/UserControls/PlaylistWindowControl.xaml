@@ -31,7 +31,7 @@
                               Volume="{Binding Path=Volume}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MediaEnded">
-                            <i:InvokeCommandAction Command="{Binding NextTrackCommand}" />
+                            <i:InvokeCommandAction Command="{Binding NextMediaCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MediaElement>
@@ -91,8 +91,6 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Name="bttnAddTrack" Content="Track hinzufügen" Width="100"
                         Margin="2" Command="{Binding Path=AddNewTrackCommand}"/>
-                <Button Grid.Column="1" Name="bttnDeleteTrack" Content="Track löschen" Width="100"
-                        Margin="2"/>
                 <Button Grid.Column="2" Name="btnShowAllTracks" Content="Alle Lieder" Width="100"
                         Margin="2" Command="{Binding Path=ShowAllTracksCommand}"/>
             </Grid>

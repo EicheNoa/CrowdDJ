@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Data.Common;
 using System.Data;
+using System.Collections.ObjectModel;
 
 namespace CrowdDJ.DAO
 {
@@ -18,7 +19,17 @@ namespace CrowdDJ.DAO
                                           VALUES (@pUserId, @pPlaylistId, @pTrackId, @pTS_created)";
         const string CmdAlreadyVotedForTrack = @"SELECT * FROM [dbo].[Vote] WHERE userId = @pUserId 
                                                     AND trackId = @pTrackId AND playlistId = @pPlaylistId";
-        const string CmdGetVotesForTrack = @"SELECT count(*) FROM [dbo].[Vote] WHERE trackId = @pTrackId AND playlistId = @pPlaylistId";
+        const string CmdGetVotesForTrack = @"SELECT count(*) FROM [dbo].[Vote] WHERE trackId = @pTrackId 
+                                                                            AND playlistId = @pPlaylistId";
+        const string CmdGetTracklistSortedVotes = @"select t.trackId, t.title, t.artist, t.url, t.genre, t.isVideo,
+                                                        (SELECT count(*) 
+                                                         FROM [dbo].[Vote] v
+                                                    	 WHERE t.trackId = v.trackId AND v.trackId = tl.trackId 
+                                                                                     AND v.playlistId = tl.playlistId
+                                                        ) as votes
+                                                    from [dbo].[Track] t, [dbo].[Tracklist] tl 
+                                                    where t.trackId = tl.trackId AND tl.playlistId = @pPlaylistId
+                                                    order by votes desc";
 
         private IDataBase database;
 
@@ -51,6 +62,12 @@ namespace CrowdDJ.DAO
             database.DefineParameter(cmd, "@pPlaylistId", DbType.Int32, playlistId);
             return cmd;
         }
+        private DbCommand CreateGetTracklistSortedVotesCmd(int playlistId)
+        {
+            DbCommand cmd = database.CreateCommand(CmdGetTracklistSortedVotes);
+            database.DefineParameter(cmd, "@pPlaylistId", DbType.Int32, playlistId);
+            return cmd;
+        }
         #endregion
         public bool InsertVote(Vote newVote)
         {
@@ -74,27 +91,60 @@ namespace CrowdDJ.DAO
             {
                 while (rDr.Read())
                 {
-                    if (!rDr.IsDBNull(0))
-                        return true;
-                    else
+                    if (rDr.GetInt32(0) == null)
                         return false;
+                    else
+                        return true;
                 }
                 return false;
             }
         }
 
-        public int GetVotesForTrack(int trackId, int playlistId)
+        public int GetVotesForTrack(Track track, int playlistId)
         {
-            int result = 0;
-            using (DbCommand cmd = CreateGetVotesForTrackCmd(trackId, playlistId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            int result = -1;
+            try
             {
-                while (rDr.Read())
+                using (DbCommand cmd = CreateGetVotesForTrackCmd(track.TrackId, playlistId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    result = rDr.GetInt32(0);
+                    while (rDr.Read())
+                    {
+                        result = rDr.GetInt32(0);
+                    }
+                    return result;
                 }
+            }
+            catch (Exception)
+            {
                 return result;
             }
+        }
+
+
+        public ObservableCollection<Track> GetTracklistSortedVotes(int playlistId)
+        {
+            ObservableCollection<Track> result = new ObservableCollection<Track>();
+            Track track;
+            try
+            {
+                using (DbCommand cmd = CreateGetTracklistSortedVotesCmd(playlistId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
+                {
+                    while (rDr.Read())
+                    {
+                        track = new Track(rDr.GetString(1), rDr.GetString(2), rDr.GetString(3), rDr.GetString(4), rDr.GetBoolean(5));
+                        track.TrackId = rDr.GetInt32(0);
+                        result.Add(track);
+                    }
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                return result;
+            }
+                
         }
     }
 }

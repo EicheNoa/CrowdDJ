@@ -60,6 +60,7 @@ namespace CrowdDJ.BL
         bool InsertIntoTracklist(Tracklist insertIntoTracklist);
         ObservableCollection<Track> GetTracksRecommendedByUser(int userId);
         ObservableCollection<Tracklist> GetAllTracklists();
+        Tracklist FindTrackInTracklist(Tracklist tracklist);
         #endregion //Tracklist
 
         #region User
@@ -74,8 +75,9 @@ namespace CrowdDJ.BL
 
         #region Vote
         bool InsertVote(Vote newVote);
-        bool AlreadyVotedForTrack(int trackId, int userId, int playlistId);
-        int GetVotesForTrack(int trackId, int playlist);
+        bool AlreadyVotedForTrack(int userId, int trackId, int playlistId);
+        int GetVotesForTrack(Track track, int playlist);
+        ObservableCollection<Track> GetTracklistSortedVotes(int playlistId);
         #endregion //Vote
     }
 }

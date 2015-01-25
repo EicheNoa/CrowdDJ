@@ -17,8 +17,8 @@ namespace CrowdDJ.DAO
     {
         const string CmdInsert = @"INSERT INTO [dbo].[Partytweet] (userId, partyId, message) VALUES (@pUserId, @pPartyId, @pMessage)";
         const string CmdDelete = @"DELETE FROM [dbo].[Partytweet] WHERE partyId = @pPartyId AND UserId = @pUserId";
-        const string CmdGetTweetsForParty = @"SELECT * FROM [dbo].[Partytweet] WHERE partyId = @pPartyId";
-        const string CmdGetTweetsForUser = @"SELECT * FROM [dbo].[Partytweet] WHERE userId = @pUserId";
+        const string CmdGetTweetsForParty = @"SELECT pt.userId, pt.partyId, pt.message,u.name FROM [dbo].[Partytweet] pt,  [dbo].[User] u WHERE u.UserId=pt.UserId AND pt.partyId = @pPartyId";
+        const string CmdGetTweetsForUser = @"SELECT pt.userId, pt.partyId, pt.message,u.name FROM  [dbo].[Partytweet] pt, [dbo].[User] u WHERE pt.UserId = @pUserId AND u.UserId=pt.UserId";
         const string CmdGetAllTweets = @"SELECT * FROM [dbo].[Partytweet]";
 
         private IDataBase database;
@@ -109,6 +109,7 @@ namespace CrowdDJ.DAO
                     rPartyId = rDr.GetString(1);
                     rMessage = rDr.GetString(2);
                     partytweet = new Partytweet(rUserId, rPartyId, rMessage);
+                    partytweet.UserName = rDr.GetString(3);
                     result.Add(partytweet);
                 }
             }
@@ -131,6 +132,7 @@ namespace CrowdDJ.DAO
                     rPartyId = rDr.GetString(1);
                     rMessage = rDr.GetString(2);
                     partytweet = new Partytweet(rUserId, rPartyId, rMessage);
+                    partytweet.UserName = rDr.GetString(3);
                     result.Add(partytweet);
                 }
             }

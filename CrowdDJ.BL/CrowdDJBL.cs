@@ -25,10 +25,9 @@ namespace CrowdDJ.BL
         private IUser user = null;
         private IVote vote = null;
 
-        private CrowdDJBL()
+        public CrowdDJBL()
         {
-            string s = ConfigurationManager.ConnectionStrings["CrowdDJ.Properties.Settings.CrowdDJDBConnectionString"].ConnectionString;
-            database = new DataBase(s);
+            database = new DataBase(ConfigurationManager.ConnectionStrings["CrowdDJ.Properties.Settings.CrowdDJDBConnectionString"].ConnectionString);
             guest = new GuestDAO(database);
             party = new PartyDAO(database);
             partytweet = new PartytweetDAO(database);
@@ -215,6 +214,11 @@ namespace CrowdDJ.BL
         {
             return tracklist.GetAllTracklists();
         }
+
+        public Tracklist FindTrackInTracklist(Tracklist tracklist)
+        {
+            return this.tracklist.FindTrackInTracklist(tracklist);
+        }
         #endregion
 
         #region User
@@ -263,11 +267,17 @@ namespace CrowdDJ.BL
             return vote.AlreadyVotedForTrack(userId, trackId, playlistId);
         }
 
-        public int GetVotesForTrack(int trackId, int playlistId)
+        public int GetVotesForTrack(Track track, int playlistId)
         {
-            return vote.GetVotesForTrack(trackId, playlistId);
+            return vote.GetVotesForTrack(track, playlistId);
         }
         #endregion //Vote
 
+
+
+        public ObservableCollection<Track> GetTracklistSortedVotes(int playlistId)
+        {
+            return vote.GetTracklistSortedVotes(playlistId);
+        }
     }
 }

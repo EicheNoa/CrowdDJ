@@ -14,7 +14,7 @@ namespace CrowdDJ.DomainClasses
         {
             UserId = userId;
             PartyId = partyId;
-            Message = message;            
+            Message = message;
         }
 
         private int userId;
@@ -36,6 +36,13 @@ namespace CrowdDJ.DomainClasses
         {
             get { return message; }
             set { message = value; }
+        }
+
+        private String userName;
+        public String UserName
+        {
+            get { return userName; }
+            set { userName = value; }
         }
 
     }

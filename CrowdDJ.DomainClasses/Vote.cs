@@ -46,5 +46,12 @@ namespace CrowdDJ.DomainClasses
             set { ts_created = value; }
         }
 
+        private User myUser;
+        public User MyUser
+        {
+            get { return myUser; }
+            set { myUser = value; }
+        }
+
     }
 }

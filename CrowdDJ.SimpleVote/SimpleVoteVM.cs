@@ -67,7 +67,7 @@ namespace CrowdDJ.SimpleVote
         {
             try
             {
-                if (Email == null || PartyId == null)
+                if (Email == null || PartyId == null || Email == "" || PartyId == "")
                 {
                     ErrorMsg(0);
                 }

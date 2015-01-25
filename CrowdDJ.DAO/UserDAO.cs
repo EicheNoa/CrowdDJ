@@ -83,9 +83,24 @@ namespace CrowdDJ.DAO
 
         public bool InsertUser(User newUser)
         {
-            using (DbCommand cmd = CreateInsertCmd(newUser))
+            try
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                if (FindUserByEmail(newUser.Email) == null)
+                {
+                    newUser.Password = newUser.Password.GetHashCode().ToString();
+                    using (DbCommand cmd = CreateInsertCmd(newUser))
+                    {
+                        return database.ExecuteNonQuery(cmd) == 1;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 

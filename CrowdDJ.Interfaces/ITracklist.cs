@@ -13,5 +13,6 @@ namespace CrowdDJ.Interfaces
         bool InsertIntoTracklist(Tracklist insertIntoTracklist);
         ObservableCollection<Track> GetTracksRecommendedByUser(int userId);
         ObservableCollection<Tracklist> GetAllTracklists();
+        Tracklist FindTrackInTracklist(Tracklist tracklist);
     }
 }

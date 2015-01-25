@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace CrowdDJ.Interfaces
 {
@@ -11,6 +12,7 @@ namespace CrowdDJ.Interfaces
     {
         bool InsertVote(Vote newVote);
         bool AlreadyVotedForTrack(int trackId, int userId, int playlistId);
-        int GetVotesForTrack(int trackId, int playlistId);
+        int GetVotesForTrack(Track track, int playlistId);
+        ObservableCollection<Track> GetTracklistSortedVotes(int playlistId);
     }
 }

@@ -14,7 +14,7 @@ namespace CrowdDJ.DomainClasses
         {
             Name = name;
             Email = email;
-            Password = password.GetHashCode().ToString();
+            Password = password;
             IsAdmin = isAdmin;
         }
 

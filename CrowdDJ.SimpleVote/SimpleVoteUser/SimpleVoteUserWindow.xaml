@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        Title="SimpleVoteUserWindow" Height="300" Width="600">
+        Title="SimpleVoteUserWindow" Height="400" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -20,9 +20,10 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <DataGrid Grid.Row="0" ItemsSource="{Binding Path=AllTracks, Mode=TwoWay}" CanUserDeleteRows="False"
+                <DataGrid Grid.Row="0" ItemsSource="{Binding Path=PartyTracks, Mode=TwoWay}" Name="TrackGrid"
                           AutoGenerateColumns="False" SelectedItem="{Binding Path=CurrentTrack, Mode=TwoWay}"
-                          Name="TrackGrid">
+                          CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True"
+                          CanUserSortColumns="False" MinWidth="200">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Titel" Binding="{Binding Path=Title}" Width="auto" />
                         <DataGridTextColumn Header="Artist" Binding="{Binding Path=Artist}" Width="auto" />
@@ -39,22 +40,25 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="Gesendete Partytweets" HorizontalAlignment="Center"/>
-                <DataGrid Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Path=SentTweets, Mode=TwoWay}">
+                <DataGrid Grid.Row="1" AutoGenerateColumns="False" CanUserSortColumns="False"
+                          ItemsSource="{Binding Path=AllTweetsForParty, Mode=TwoWay}"
+                          CanUserDeleteRows="False" CanUserReorderColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Benutzer" Binding="{Binding Path=Name}" Width="auto" />
-                        <DataGridTextColumn Header="Tweet" Binding="{Binding Path=Tweet}" Width="auto" />
+                        <DataGridTextColumn Header="Benutzer" Binding="{Binding Path=UserName}" Width="auto" />
+                        <DataGridTextColumn Header="Tweet" Binding="{Binding Path=Message}" Width="auto" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <StackPanel Grid.Row="2" HorizontalAlignment="Center">
-                    <TextBox Text="{Binding NewTweet}" Margin="4"/>
-                    <Button  Content="Schicken" Width="200" Margin="4" Command="{Binding SendNewTweetCommand}"/>
+                <StackPanel Grid.Row="2" Orientation="Vertical">
+                    <TextBox Name="NewTweetText" Text="{Binding NewTweet, Mode=TwoWay}" Margin="4"/>
+                    <Button  Content="Schicken" Width="200" Margin="4" Command="{Binding SendNewTweetCommand}"
+                             CommandParameter="{Binding ElementName=NewTweetText, Path=SelectedText}"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Column="2" Margin="0, 0, 0, 0">
                 <StackPanel VerticalAlignment="Center">
                     <Label Content="Neuen Track vorschlagen" />
-                    <ComboBox Grid.Row="0" ItemsSource="{Binding Path=AllTracks}" 
-                      SelectedItem="{Binding Path=SelectedTrack}">
+                    <ComboBox Grid.Row="0" ItemsSource="{Binding Path=AllTracks}" Name="cmbTrack" 
+                      SelectedItem="{Binding Path=SelectedTrack, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel HorizontalAlignment="Left">
@@ -65,7 +69,8 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button Content="Vorschlagen" Command="{Binding SuggestTrackCommand}" Margin="4"/>
+                    <Button Content="Vorschlagen" Command="{Binding SuggestTrackCommand}" 
+                            CommandParameter="{Binding ElementName=cmbTrack, Path=SelectedItem}" Margin="4"/>
                 </StackPanel>
             </Grid>
             
