@@ -74,8 +74,7 @@
             <DataGrid Grid.Row="1" AutoGenerateColumns="false" Name="TrackDataGrid"
                       ItemsSource="{Binding Path=Tracks, IsAsync=True, Mode=TwoWay}"
                       SelectedItem="{Binding Path=SelectedTrack, Mode=TwoWay}"
-                      EnableRowVirtualization="False"
-                      IsReadOnly="True">
+                      IsReadOnly="True" CanUserDeleteRows="False" CanUserSortColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Titel" Binding="{Binding Path=Title}" Width="auto" />
                     <DataGridTextColumn Header="Artist" Binding="{Binding Path=Artist}" Width="auto" />

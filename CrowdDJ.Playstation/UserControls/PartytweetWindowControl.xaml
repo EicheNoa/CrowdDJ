@@ -17,8 +17,8 @@
                           Grid.Row="1" AutoGenerateColumns="False" 
                           ItemsSource="{Binding Path=AllPartytweets}"  
                           SelectedItem="{Binding Path=IsSelectedPartyTweet, Mode=TwoWay}"
-                          EnableRowVirtualization="False"
-                          IsReadOnly="True">
+                          CanUserDeleteRows="False" IsReadOnly="True"
+                  CanUserSortColumns="False">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding DoubleClickCommand}"

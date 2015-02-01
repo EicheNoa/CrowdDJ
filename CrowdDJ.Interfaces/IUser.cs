@@ -11,6 +11,7 @@ namespace CrowdDJ.Interfaces
     public interface IUser
     {
         bool InsertUser(User user);
+        bool LoginUser(String email, String password);
         bool DeleteUser(int id);
         bool UpdateUser(User user, int id);
         ObservableCollection<User> GetAllUser();

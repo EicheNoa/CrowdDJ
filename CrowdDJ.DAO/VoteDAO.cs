@@ -86,18 +86,26 @@ namespace CrowdDJ.DAO
 
         public bool AlreadyVotedForTrack(int userId, int trackId, int playlistId)
         {
-            using (DbCommand cmd = CreateAlreadyVotedForTrack(userId, trackId, playlistId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (userId != null && userId > 0 && trackId != null && trackId > 0 && playlistId != null && playlistId > 0)
             {
-                while (rDr.Read())
+                using (DbCommand cmd = CreateAlreadyVotedForTrack(userId, trackId, playlistId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    if (rDr.GetInt32(0) == null)
-                        return false;
-                    else
-                        return true;
+                    while (rDr.Read())
+                    {
+                        if (rDr.GetInt32(0) > 0)
+                            return true;
+                        else
+                            return false;
+                    }
+                    return false;
                 }
+            }
+            else
+            {
                 return false;
             }
+
         }
 
         public int GetVotesForTrack(Track track, int playlistId)
@@ -135,6 +143,7 @@ namespace CrowdDJ.DAO
                     {
                         track = new Track(rDr.GetString(1), rDr.GetString(2), rDr.GetString(3), rDr.GetString(4), rDr.GetBoolean(5));
                         track.TrackId = rDr.GetInt32(0);
+                        track.NrVotes = rDr.GetInt32(6);
                         result.Add(track);
                     }
                     return result;

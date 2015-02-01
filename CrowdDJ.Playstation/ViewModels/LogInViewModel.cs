@@ -65,29 +65,28 @@ namespace CrowdDJ.Playstation.ViewModels
             {
                 if (item.Key.Equals(Email))
                 {
-                    dummyUser = bl.FindUserByEmail(Email);
+                    if (item.Value.Equals(true))
+                    {
+                        dummyUser = bl.FindUserByEmail(Email);
+                        if (dummyUser != null && dummyUser.Password.Equals(Password.GetHashCode().ToString()))
+                        {
+                            Window window = new MainWindowLayout();
+                            window.Show();
+                            Application.Current.Windows[0].Close();
+                        }
+                        else
+                        {
+                            result = MessageBox.Show("Ungültige Eingabe! Passwort / Email kombination falsch!", "Fehler",
+                                                     MessageBoxButton.OK, MessageBoxImage.Error);
+                        }   
+                    }
+                    else
+                    {
+                        result = MessageBox.Show("Sie sind kein Administrator!", "Fehler",
+                                                 MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
-            }
-            string b = Password.GetHashCode().ToString();
-            if (dummyUser != null && dummyUser.Password.Equals(Password.GetHashCode().ToString()))
-            {
-                if (dummyUser.IsAdmin == true)
-                {
-                    Window window = new MainWindowLayout();
-                    window.Show();
-                    Application.Current.Windows[0].Close();
-                }
-                else
-                {
-                    result = MessageBox.Show("Sie sind kein Administrator!", "Fehler",
-                                             MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                result = MessageBox.Show("Ungültige Eingabe! Passwort / Email kombination falsch!", "Fehler",
-                                         MessageBoxButton.OK, MessageBoxImage.Error);
-            }            
+            }         
         }
     }
 }

@@ -95,46 +95,52 @@ namespace CrowdDJ.DAO
         public ObservableCollection<Partytweet> GetTweetsForParty(string partyId)
         {
             ObservableCollection<Partytweet> result = new ObservableCollection<Partytweet>();
-            Partytweet partytweet = null;
-            int rUserId = 0;
-            string rPartyId = "";
-            string rMessage = "";
-
-            using (DbCommand cmd = CreateGetTweetsForPartyCmd(partyId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (partyId != null && partyId != "")
             {
-                while (rDr.Read())
+                Partytweet partytweet = null;
+                int rUserId = 0;
+                string rPartyId = "";
+                string rMessage = "";
+
+                using (DbCommand cmd = CreateGetTweetsForPartyCmd(partyId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rUserId = rDr.GetInt32(0);
-                    rPartyId = rDr.GetString(1);
-                    rMessage = rDr.GetString(2);
-                    partytweet = new Partytweet(rUserId, rPartyId, rMessage);
-                    partytweet.UserName = rDr.GetString(3);
-                    result.Add(partytweet);
-                }
+                    while (rDr.Read())
+                    {
+                        rUserId = rDr.GetInt32(0);
+                        rPartyId = rDr.GetString(1);
+                        rMessage = rDr.GetString(2);
+                        partytweet = new Partytweet(rUserId, rPartyId, rMessage);
+                        partytweet.UserName = rDr.GetString(3);
+                        result.Add(partytweet);
+                    }
+                } 
             }
             return result;
         }
         public ObservableCollection<Partytweet> GetTweetsForUser(int userId)
         {
             ObservableCollection<Partytweet> result = new ObservableCollection<Partytweet>();
-            Partytweet partytweet = null;
-            int rUserId = 0;
-            string rPartyId = "";
-            string rMessage = "";
-
-            using (DbCommand cmd = CreateGetTweetsForUserCmd(userId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (userId != null && userId != 0)
             {
-                while (rDr.Read())
+                Partytweet partytweet = null;
+                int rUserId = 0;
+                string rPartyId = "";
+                string rMessage = "";
+
+                using (DbCommand cmd = CreateGetTweetsForUserCmd(userId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rUserId = rDr.GetInt32(0);
-                    rPartyId = rDr.GetString(1);
-                    rMessage = rDr.GetString(2);
-                    partytweet = new Partytweet(rUserId, rPartyId, rMessage);
-                    partytweet.UserName = rDr.GetString(3);
-                    result.Add(partytweet);
-                }
+                    while (rDr.Read())
+                    {
+                        rUserId = rDr.GetInt32(0);
+                        rPartyId = rDr.GetString(1);
+                        rMessage = rDr.GetString(2);
+                        partytweet = new Partytweet(rUserId, rPartyId, rMessage);
+                        partytweet.UserName = rDr.GetString(3);
+                        result.Add(partytweet);
+                    }
+                } 
             }
             return result;
         }

@@ -129,21 +129,24 @@ namespace CrowdDJ.DAO
         public Playlist GetPlaylistForParty(string id)
         {
             Playlist result = null;
-            int rPlaylistId = 0;
-            string rPartyId = "";
-            string rName = "";
-            
-            using (DbCommand cmd = CreateGetPlaylistForPartyCmd(id))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (id != "" && id != null)
             {
-                while (rDr.Read())
+                int rPlaylistId = 0;
+                string rPartyId = "";
+                string rName = "";
+
+                using (DbCommand cmd = CreateGetPlaylistForPartyCmd(id))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rPlaylistId = rDr.GetInt32(0);
-                    rPartyId = rDr.GetString(1);
-                    rName = rDr.GetString(2);
-                    result = new Playlist(rPartyId, rName);
-                    result.PlaylistId = rPlaylistId;
-                }
+                    while (rDr.Read())
+                    {
+                        rPlaylistId = rDr.GetInt32(0);
+                        rPartyId = rDr.GetString(1);
+                        rName = rDr.GetString(2);
+                        result = new Playlist(rPartyId, rName);
+                        result.PlaylistId = rPlaylistId;
+                    }
+                } 
             }
             return result;
         }
@@ -190,8 +193,8 @@ namespace CrowdDJ.DAO
             {
                 while (rDr.Read())
                 {
-                    rPartyId = rDr.GetString(0);
-                    rName = rDr.GetString(1);
+                    rPartyId = rDr.GetString(1);
+                    rName = rDr.GetString(2);
                     playlist = new Playlist(rPartyId, rName);
                     result.Add(playlist);
                 }

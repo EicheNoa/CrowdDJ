@@ -36,8 +36,8 @@ namespace CrowdDJ.Playstation.ViewModels
         private void AddNewUser(object obj)
         {
             MessageBoxResult result;
-            if (Name == "" || Password == "" || 
-                RePassword == "" || Email == "")
+            if (Name == "" || Password == "" || RePassword == "" || Email == "" ||
+                Name == null || Password == null || RePassword == null || Email == null)
             {
                 result = MessageBox.Show("Alle Felder müssen ausgefüllt sein!", "Fehler",
                                                           MessageBoxButton.OK, MessageBoxImage.Warning);

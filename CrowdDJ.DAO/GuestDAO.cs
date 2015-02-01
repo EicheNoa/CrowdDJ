@@ -65,14 +65,21 @@ namespace CrowdDJ.DAO
 
         public bool AddGuest(Guest newGuest)
         {
-            try
+            if (newGuest.PartyId != null && newGuest.UserId != null)
             {
-                using (DbCommand cmd = CreateInsertCmd(newGuest))
+                try
                 {
-                    return database.ExecuteNonQuery(cmd) == 1;
+                    using (DbCommand cmd = CreateInsertCmd(newGuest))
+                    {
+                        return database.ExecuteNonQuery(cmd) == 1;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             }
-            catch (Exception)
+            else
             {
                 return false;
             }
@@ -80,14 +87,21 @@ namespace CrowdDJ.DAO
 
         public bool RemoveGuest(Guest removeGuest)
         {
-            try
+            if (removeGuest.UserId != null && removeGuest.PartyId != null)
             {
-                using (DbCommand cmd = CreateDeleteCmd(removeGuest))
+                try
                 {
-                    return database.ExecuteNonQuery(cmd) == 1;
+                    using (DbCommand cmd = CreateDeleteCmd(removeGuest))
+                    {
+                        return database.ExecuteNonQuery(cmd) == 1;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             }
-            catch (Exception)
+            else
             {
                 return false;
             }
@@ -95,72 +109,86 @@ namespace CrowdDJ.DAO
 
         public bool PartyIsVisitedByGuest(int searchGuestId, string partyId)
         {
-            int i = 0;
-            using (DbCommand cmd = CreateSearchCmd(searchGuestId, partyId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (searchGuestId != null && partyId != null && partyId != "")
             {
-                while (rDr.Read())
+                int i = 0;
+                using (DbCommand cmd = CreateSearchCmd(searchGuestId, partyId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    i = rDr.GetInt32(0);
+                    while (rDr.Read())
+                    {
+                        i = rDr.GetInt32(0);
+                    }
+                    return i > 0;
                 }
-                return i > 0;
             }
+            else
+            {
+                return false;
+            }
+
         }
 
         public ObservableCollection<User> GetGuestlistForParty(string partyId)
         {
             ObservableCollection<User> result = new ObservableCollection<User>();
-            User user = null;
-            int rUserId = 0;
-            string rName = "";
-            string rEmail = "";
-            bool rIsAdmin = false;
-
-            using (DbCommand cmd = CreateSearchGuestListCmd(partyId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (partyId != null && partyId != "")
             {
-                while (rDr.Read())
+                User user = null;
+                int rUserId = 0;
+                string rName = "";
+                string rEmail = "";
+                bool rIsAdmin = false;
+
+                using (DbCommand cmd = CreateSearchGuestListCmd(partyId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rUserId = rDr.GetInt32(0);
-                    rName = rDr.GetString(1);
-                    rEmail = rDr.GetString(2);
-                    rIsAdmin = rDr.GetBoolean(3);
+                    while (rDr.Read())
+                    {
+                        rUserId = rDr.GetInt32(0);
+                        rName = rDr.GetString(1);
+                        rEmail = rDr.GetString(2);
+                        rIsAdmin = rDr.GetBoolean(3);
 
-                    user = new User(rName, "", rEmail, rIsAdmin);
-                    user.UserId = rUserId;
+                        user = new User(rName, "", rEmail, rIsAdmin);
+                        user.UserId = rUserId;
 
-                    result.Add(user);
+                        result.Add(user);
+                    }
                 }
-                return result;
             }
+            return result;
         }
 
 
         public ObservableCollection<Party> GetAttemptedPartyList(int userId)
         {
             ObservableCollection<Party> result = new ObservableCollection<Party>();
-            Party party = null;
-            string rPartyId = "";
-            string rName = "";
-            string rLocation = "";
-            string rHost = "";
-
-            using (DbCommand cmd = CreateSearchPartiesForUserCmd(userId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (userId != null && userId > 0)
             {
-                while (rDr.Read())
+                Party party = null;
+                string rPartyId = "";
+                string rName = "";
+                string rLocation = "";
+                string rHost = "";
+
+                using (DbCommand cmd = CreateSearchPartiesForUserCmd(userId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rPartyId = rDr.GetString(0);
-                    rName = rDr.GetString(1);
-                    rLocation = rDr.GetString(2);
-                    rHost = rDr.GetString(3);
+                    while (rDr.Read())
+                    {
+                        rPartyId = rDr.GetString(0);
+                        rName = rDr.GetString(1);
+                        rLocation = rDr.GetString(2);
+                        rHost = rDr.GetString(3);
 
-                    party = new Party(rPartyId, rName, rLocation, rHost, "", "", false);
+                        party = new Party(rPartyId, rName, rLocation, rHost, "", "", false);
 
-                    result.Add(party);
+                        result.Add(party);
+                    }
                 }
-                return result;
             }
+            return result;
         }
     }
 }

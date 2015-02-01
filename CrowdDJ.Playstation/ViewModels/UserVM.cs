@@ -54,6 +54,7 @@ namespace CrowdDJ.Playstation.ViewModels
         public ICommand UpdateUserViewCommand { get; private set; }
 
         private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
+        Timer timer = new Timer(10000);
 
         public UserVM()
         {
@@ -64,6 +65,12 @@ namespace CrowdDJ.Playstation.ViewModels
             this.DeleteUserFromPartyCommand = new RelayCommand(this.DeleteUserFromParty);
             this.DeletePartytweetCommand = new RelayCommand(this.DeletePartytweet);
             this.UpdateUserViewCommand = new RelayCommand(this.UpdateUserView);
+            timer.Elapsed += Init;
+            timer.Start();
+        }
+
+        private void Init(object sender, ElapsedEventArgs e)
+        {
             SetCollections();
         }
 

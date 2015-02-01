@@ -17,6 +17,7 @@ namespace CrowdDJ.DAO
     {
         const string CmdInsert = @"INSERT INTO [dbo].[User] (email, password, isAdmin, name) 
                                           VALUES (@pEmail, @pPassword, @pIsAdmin, @pName)";
+        const string CmdCheckPW = "SELECT password FROM [dbo].[User] where email = @pEmail";
         const string CmdDelete = @"DELETE FROM [dbo].[User] WHERE userId = @pUserId";
         const string CmdUpdate = @"UPDATE [dbo].[User] SET email = @pEmail, isAdmin = @pIsAdmin, name = @pName
                                     WHERE userId = @pUserId";
@@ -40,6 +41,12 @@ namespace CrowdDJ.DAO
             database.DefineParameter(cmd, "@pPassword", DbType.String, newUser.Password);
             database.DefineParameter(cmd, "@pIsAdmin", DbType.String, newUser.IsAdmin);
             database.DefineParameter(cmd, "@pName", DbType.String, newUser.Name);
+            return cmd;
+        }
+        private DbCommand CreateCheckPWCmd(string email)
+        {
+            DbCommand cmd = database.CreateCommand(CmdCheckPW);
+            database.DefineParameter(cmd, "@pEmail", DbType.String, email);
             return cmd;
         }
         private DbCommand CreateDeleteCmd(int deleteUserId)
@@ -106,17 +113,31 @@ namespace CrowdDJ.DAO
 
         public bool UpdateUser(User updateUser, int id)
         {
-            using (DbCommand cmd = CreateUpdateUserCmd(updateUser, id))
+            if (id != 0 && id != null)
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateUpdateUserCmd(updateUser, id))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
 
         public bool DeleteUser(int id)
         {
-            using (DbCommand cmd = CreateDeleteCmd(id))
+            if (id != 0 && id != null)
             {
-                return database.ExecuteNonQuery(cmd) == 1;
+                using (DbCommand cmd = CreateDeleteCmd(id))
+                {
+                    return database.ExecuteNonQuery(cmd) == 1;
+                } 
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -150,68 +171,115 @@ namespace CrowdDJ.DAO
         public User FindUserById(int id)
         {
             User user = null;
-            int rUserId = 0;
-            string rName = "";
-            string rEmail = "";
-            bool rIsAdmin = false;
-
-            using (DbCommand cmd = CreateSearchUserCmd(id))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (id != null && id != 0)
             {
-                while (rDr.Read())
+                int rUserId = 0;
+                string rName = "";
+                string rEmail = "";
+                bool rIsAdmin = false;
+
+                using (DbCommand cmd = CreateSearchUserCmd(id))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rUserId = rDr.GetInt32(0);
-                    rEmail = rDr.GetString(1);
-                    rIsAdmin = rDr.GetBoolean(3);
-                    rName = rDr.GetString(4);
-                    user = new User(rName, "", rEmail, rIsAdmin);
-                    user.UserId = rUserId;
-                }
+                    while (rDr.Read())
+                    {
+                        rUserId = rDr.GetInt32(0);
+                        rEmail = rDr.GetString(1);
+                        rIsAdmin = rDr.GetBoolean(3);
+                        rName = rDr.GetString(4);
+                        user = new User(rName, "", rEmail, rIsAdmin);
+                        user.UserId = rUserId;
+                    }
+                } 
             }
             return user;
         }
         public User FindUserByEmail(string email)
         {
             User user = null;
-            int rUserId = 0;
-            string rName = "";
-            string rEmail = "";
-            string rPassword = "";
-            bool rIsAdmin = false;
-
-            using (DbCommand cmd = CreateSearchUserByEmailCmd(email))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            try
             {
-                while (rDr.Read())
+                int rUserId = 0;
+                string rName = "";
+                string rEmail = "";
+                string rPassword = "";
+                bool rIsAdmin = false;
+
+                using (DbCommand cmd = CreateSearchUserByEmailCmd(email))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rUserId = rDr.GetInt32(0);
-                    rEmail = rDr.GetString(1);
-                    rPassword = rDr.GetString(2);
-                    rIsAdmin = rDr.GetBoolean(3);
-                    rName = rDr.GetString(4);
-                    user = new User(rName, rPassword, rEmail, rIsAdmin);
-                    user.UserId = rUserId;
+                    while (rDr.Read())
+                    {
+                        rUserId = rDr.GetInt32(0);
+                        rEmail = rDr.GetString(1);
+                        rPassword = rDr.GetString(2);
+                        rIsAdmin = rDr.GetBoolean(3);
+                        rName = rDr.GetString(4);
+                        user = new User(rName, rPassword, rEmail, rIsAdmin);
+                        user.UserId = rUserId;
+                    }
                 }
+                return user;
             }
-            return user;
+            catch (Exception)
+            {
+                return user;
+            }
         }
         public List<KeyValuePair<string, bool>> GetAllEMails()
         {
             List<KeyValuePair<string, bool>> result = new List<KeyValuePair<string, bool>>();
-            string rEmail = "";
-            bool rIsAdmin = false;
-
-            using (DbCommand cmd = CreateGetAllEMailsCmd())
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            try
             {
-                while (rDr.Read())
+                string rEmail = "";
+                bool rIsAdmin = false;
+
+                using (DbCommand cmd = CreateGetAllEMailsCmd())
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rEmail = rDr.GetString(0);
-                    rIsAdmin = rDr.GetBoolean(1);
-                    result.Add(new KeyValuePair<string, bool>(rEmail, rIsAdmin));
+                    while (rDr.Read())
+                    {
+                        rEmail = rDr.GetString(0);
+                        rIsAdmin = rDr.GetBoolean(1);
+                        result.Add(new KeyValuePair<string, bool>(rEmail, rIsAdmin));
+                    }
+                    return result;
                 }
             }
+            catch (Exception)
+            {
             return result;
+            }
+        }
+
+
+        public bool LoginUser(string email, string password)
+        {
+            try
+            {
+                if (FindUserByEmail(email) != null)
+                {
+                    String rPw = "";
+                    password = password.GetHashCode().ToString();
+                    using (DbCommand cmd = CreateCheckPWCmd(email))
+                    using (IDataReader rDr = database.ExecuteReader(cmd))
+                    {
+                        while (rDr.Read())
+                        {
+                            rPw = rDr.GetString(0);
+                        }
+                    }
+                    return rPw == password;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

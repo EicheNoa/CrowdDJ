@@ -16,5 +16,6 @@ namespace CrowdDJ.Interfaces
         Party FindPartyById(string partyId);
         ObservableCollection<Party> FindPartyWithHost(string hostName);
         ObservableCollection<Party> GetAllParties();
+        ObservableCollection<Party> GetAllActivePartiesForUser(int userId);
     }
 }

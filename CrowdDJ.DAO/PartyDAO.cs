@@ -24,6 +24,7 @@ namespace CrowdDJ.DAO
         const string CmdSearch = @"SELECT * FROM [dbo].[Party] WHERE partyId = @pPartyId";
         const string CmdSearchHost = @"SELECT * FROM [dbo].[Party] WHERE host = @pHost";
         const string CmdSelectAll = @"SELECT * FROM [dbo].[Party]";
+        const string CmdGetAllActivePartys = @"SELECT p.* FROM [dbo].[Party] p, [dbo].[Guest] g WHERE isActive = 1 AND g.userId = @pUserId and g.partyId = p.partyId";
 
         private IDataBase database;
 
@@ -80,34 +81,59 @@ namespace CrowdDJ.DAO
             DbCommand cmd = database.CreateCommand(CmdSelectAll);
             return cmd;
         }
+        private DbCommand CreateGetAllActivePartys(int userId)
+        {
+            DbCommand cmd = database.CreateCommand(CmdGetAllActivePartys);
+            database.DefineParameter(cmd, "@pUserId", DbType.Int32, userId);
+            return cmd;
+        }
         #endregion
 
         #region public methods
         public bool AddParty(Party newParty)
         {
-            try
+            if (newParty.Host != null && newParty.Host != "" && newParty.Location != null && newParty.Location != "" &&
+                newParty.Name != "" && newParty.Name != null && newParty.PartyBegin != null && newParty.PartyBegin != "" &&
+                newParty.PartyEnd != "" && newParty.PartyEnd != null && newParty.PartyId != "" && newParty.PartyId != null)
             {
-                using (DbCommand cmd = CreateInsertCmd(newParty))
+                try
                 {
-                    return database.ExecuteNonQuery(cmd) == 1;
+                    using (DbCommand cmd = CreateInsertCmd(newParty))
+                    {
+                        return database.ExecuteNonQuery(cmd) == 1;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             }
-            catch (Exception)
+            else
             {
                 return false;
             }
+
         }
 
         public bool UpdateParty(Party party, string id)
         {
-            try
+            if (party.Host != null && party.Host != "" && party.Location != null && party.Location != "" &&
+                party.Name != "" && party.Name != null && party.PartyBegin != null && party.PartyBegin != "" &&
+                party.PartyEnd != "" && party.PartyEnd != null && party.PartyId != "" && party.PartyId != null)
             {
-                using (DbCommand cmd = CreateUpdateCmd(party, id))
+                try
                 {
-                    return database.ExecuteNonQuery(cmd) == 1;
+                    using (DbCommand cmd = CreateUpdateCmd(party, id))
+                    {
+                        return database.ExecuteNonQuery(cmd) == 1;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
                 }
             }
-            catch (Exception)
+            else
             {
                 return false;
             }
@@ -131,50 +157,20 @@ namespace CrowdDJ.DAO
         public Party FindPartyById(string partyId)
         {
             Party party= null;
-            string rPartyId = "";
-            string rName = "";
-            string rLocation = "";
-            string rHost = "";
-            string rBegin;
-            string rEnd;
-            bool rIsActive = false;
-
-            using (DbCommand cmd = CreateSearchCmd(partyId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (partyId != null && partyId != "")
             {
-                while (rDr.Read())
-                {
-                    rPartyId = rDr.GetString(0);
-                    rName = rDr.GetString(1);
-                    rLocation = rDr.GetString(2);
-                    rHost = rDr.GetString(3);
-                    rBegin = rDr.GetString(4);
-                    rEnd = rDr.GetString(5);
-                    rIsActive = rDr.GetBoolean(6);
-                    party = new Party(rPartyId, rName, rLocation, rHost, rBegin, rEnd, rIsActive);
-                }
-            }
-            return party;
-        }
+                string rPartyId = "";
+                string rName = "";
+                string rLocation = "";
+                string rHost = "";
+                string rBegin;
+                string rEnd;
+                bool rIsActive = false;
 
-        public ObservableCollection<Party> FindPartyWithHost(string hostName)
-        {
-            ObservableCollection<Party> result = new ObservableCollection<Party>();
-            Party party = null;
-            string rPartyId ="";
-            string rName = "";
-            string rLocation = "";
-            string rHost = "";
-            string rBegin;
-            string rEnd;
-            bool rIsActive = false;
-
-            using (DbCommand cmd = CreateSearchHostCmd(hostName))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
-            {
-                while (rDr.Read())
+                using (DbCommand cmd = CreateSearchCmd(partyId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    if (!rDr.IsDBNull(0))
+                    while (rDr.Read())
                     {
                         rPartyId = rDr.GetString(0);
                         rName = rDr.GetString(1);
@@ -185,8 +181,44 @@ namespace CrowdDJ.DAO
                         rIsActive = rDr.GetBoolean(6);
                         party = new Party(rPartyId, rName, rLocation, rHost, rBegin, rEnd, rIsActive);
                     }
-                    result.Add(party);
-                }
+                } 
+            }
+            return party;
+        }
+
+        public ObservableCollection<Party> FindPartyWithHost(string hostName)
+        {
+            ObservableCollection<Party> result = new ObservableCollection<Party>();
+            Party party = null;
+            if (hostName != null && hostName != "")
+            {
+                string rPartyId = "";
+                string rName = "";
+                string rLocation = "";
+                string rHost = "";
+                string rBegin;
+                string rEnd;
+                bool rIsActive = false;
+
+                using (DbCommand cmd = CreateSearchHostCmd(hostName))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
+                {
+                    while (rDr.Read())
+                    {
+                        if (!rDr.IsDBNull(0))
+                        {
+                            rPartyId = rDr.GetString(0);
+                            rName = rDr.GetString(1);
+                            rLocation = rDr.GetString(2);
+                            rHost = rDr.GetString(3);
+                            rBegin = rDr.GetString(4);
+                            rEnd = rDr.GetString(5);
+                            rIsActive = rDr.GetBoolean(6);
+                            party = new Party(rPartyId, rName, rLocation, rHost, rBegin, rEnd, rIsActive);
+                        }
+                        result.Add(party);
+                    }
+                } 
             }
             return result;
         }
@@ -221,6 +253,42 @@ namespace CrowdDJ.DAO
                     }
                     result.Add(party);
                 }
+            }
+            return result;
+        }
+        public ObservableCollection<Party> GetAllActivePartiesForUser(int userId)
+        {
+            ObservableCollection<Party> result = new ObservableCollection<Party>();
+            Party party = null;
+            if (userId != null && userId != 0)
+            {
+                string rPartyId = "";
+                string rName = "";
+                string rLocation = "";
+                string rHost = "";
+                string rBegin;
+                string rEnd;
+                bool rIsActive = false;
+
+                using (DbCommand cmd = CreateGetAllActivePartys(userId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
+                {
+                    while (rDr.Read())
+                    {
+                        if (!rDr.IsDBNull(0))
+                        {
+                            rPartyId = rDr.GetString(0);
+                            rName = rDr.GetString(1);
+                            rLocation = rDr.GetString(2);
+                            rHost = rDr.GetString(3);
+                            rBegin = rDr.GetString(4);
+                            rEnd = rDr.GetString(5);
+                            rIsActive = rDr.GetBoolean(6);
+                            party = new Party(rPartyId, rName, rLocation, rHost, rBegin, rEnd, rIsActive);
+                        }
+                        result.Add(party);
+                    }
+                } 
             }
             return result;
         }

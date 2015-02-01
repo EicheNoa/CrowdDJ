@@ -279,5 +279,17 @@ namespace CrowdDJ.BL
         {
             return vote.GetTracklistSortedVotes(playlistId);
         }
+
+
+        public bool LoginUser(string email, string password)
+        {
+            return user.LoginUser(email, password);
+        }
+
+
+        public ObservableCollection<Party> GetAllActivePartiesForUser(int userId)
+        {
+            return party.GetAllActivePartiesForUser(userId);
+        }
     }
 }

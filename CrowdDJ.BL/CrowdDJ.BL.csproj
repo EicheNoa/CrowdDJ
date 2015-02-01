@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MyToolkit">
+      <HintPath>..\packages\MyToolkit.2.3.26.0\lib\portable-net45+wp8+win8+wpa81\MyToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="MyToolkit.Extended">
+      <HintPath>..\packages\MyToolkit.Extended.2.3.26.0\lib\net45\MyToolkit.Extended.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -40,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BLFactory.cs" />
     <Compile Include="CrowdDJBL.cs" />
     <Compile Include="ICrowdDJBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +63,9 @@
       <Project>{13dadbfd-3651-453a-bc17-411c441a2a01}</Project>
       <Name>CrowdDJ.Interfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

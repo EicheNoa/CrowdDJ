@@ -4,6 +4,7 @@ D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.SimpleVote.pdb
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.BL.dll
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.DomainClasses.dll
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.QRCode.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\System.Windows.Interactivity.dll
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.Interfaces.dll
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.DAO.dll
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.BL.pdb
@@ -11,6 +12,16 @@ D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.DomainClasses.pdb
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.QRCode.pdb
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.Interfaces.pdb
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\CrowdDJ.DAO.pdb
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\de\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\en\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\es\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\it\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\ru\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\obj\Debug\CrowdDJ.SimpleVote.csprojResolveAssemblyReference.cache
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\obj\Debug\MainWindow.baml
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\obj\Debug\SimpleVoteUser\SimpleVoteUserWindow.baml
@@ -23,3 +34,8 @@ D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\obj\Debug\CrowdDJ.SimpleVote.Properties.Re
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\obj\Debug\CrowdDJ.SimpleVote.csproj.GenerateResource.Cache
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\obj\Debug\CrowdDJ.SimpleVote.exe
 D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\obj\Debug\CrowdDJ.SimpleVote.pdb
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\MyToolkit.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\MyToolkit.Extended.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\MyToolkit.xml
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\MyToolkit.Extended.xml
+D:\Uni\Git\CrowdDJ\CrowdDJ.SimpleVote\bin\Debug\App.config

@@ -26,7 +26,8 @@
                           Grid.Row="0" AutoGenerateColumns="False" 
                           ItemsSource="{Binding Path=AllUser, Mode=TwoWay}"  
                           SelectedItem="{Binding Path=IsSelectedUser, Mode=TwoWay}"
-                          CanUserReorderColumns="False">
+                          CanUserReorderColumns="False" CanUserDeleteRows="False"
+                          CanUserSortColumns="False">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
                             <i:InvokeCommandAction Command="{Binding DoubleClickCommand}"
@@ -71,7 +72,8 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" HorizontalAlignment="Center" Content="An Partys teilgenommen"/>
             <DataGrid Name="PartylistGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True"
-                      ItemsSource="{Binding Path=AttemptedParties, Mode=TwoWay, IsAsync=True}" Margin="5,0,0,5" >
+                      ItemsSource="{Binding Path=AttemptedParties, Mode=TwoWay, IsAsync=True}" 
+                      Margin="5,0,0,5" CanUserDeleteRows="False" CanUserSortColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="PartyID" Binding="{Binding Path=PartyId}" Width="auto" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="auto" />
@@ -84,8 +86,8 @@
                             CommandParameter="{Binding ElementName=PartylistGrid, Path=SelectedItem}"/>
             <Label Grid.Row="3" HorizontalAlignment="Center" Content="Gesendete Partytweets"/>
             <DataGrid Name="PartytweetDataGrid" Grid.Row="4" ItemsSource="{Binding Path=SentPartyTweets, Mode=TwoWay, IsAsync=True}"
-                      SelectedItem="{Binding Path=IsSelectedTweet}" 
-                      AutoGenerateColumns="False" Margin="5,5,0,5" IsReadOnly="True">
+                      SelectedItem="{Binding Path=IsSelectedTweet}"  CanUserDeleteRows="False"
+                      AutoGenerateColumns="False" Margin="5,5,0,5" IsReadOnly="True" CanUserSortColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="PartyID" Binding="{Binding Path=PartyId}" Width="auto" />
                     <DataGridTextColumn Header="Nachricht" Binding="{Binding Path=Message}" Width="auto" />
@@ -96,7 +98,8 @@
                             CommandParameter="{Binding ElementName=PartytweetDataGrid, Path=SelectedItem}"/>
             <Label Grid.Row="6" HorizontalAlignment="Center" Content="Gewunschene / Gewählte Tracks" />
             <DataGrid Grid.Row="7" ItemsSource="{Binding Path=VotedTracks, Mode=TwoWay, IsAsync=True}" 
-                      IsReadOnly="True" AutoGenerateColumns="False" Margin="5,5,0,0">
+                      IsReadOnly="True" AutoGenerateColumns="False" Margin="5,5,0,0"
+                      CanUserDeleteRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Titel" Binding="{Binding Path=Title}" Width="auto" />
                     <DataGridTextColumn Header="Artist" Binding="{Binding Path=Artist}" Width="auto" />

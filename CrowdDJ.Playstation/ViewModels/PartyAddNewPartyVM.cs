@@ -39,8 +39,10 @@ namespace CrowdDJ.Playstation.ViewModels
         private void AddParty(object obj)
         {
             MessageBoxResult result;
-            if (PartyId == "" || Host == "" || Name == "" || 
-                Location == "" || PartyBegin == "" || PartyEnd == "")
+            if ((PartyId == "" || Host == "" || Name == "" || 
+                Location == "" || PartyBegin == "" || PartyEnd == "") ||
+                (PartyId == null || Host == null || Name == null ||
+                Location == null || PartyBegin == null || PartyEnd == null))
             {
                 result = MessageBox.Show("Alle Felder müssen ausgefüllt sein!", "Fehler",
                                                             MessageBoxButton.OK, MessageBoxImage.Error);
@@ -48,6 +50,7 @@ namespace CrowdDJ.Playstation.ViewModels
             else
             {
                 bl.AddParty(new Party(PartyId, Name, Location, Host, PartyBegin, PartyEnd, IsActive));
+                bl.InsertPlaylist(new Playlist(PartyId, Name + " Playlist"));
                 CloseWindow("CrowdDJ.Playstation.Views.PartyAddNewPartyWindow");                
                 result = MessageBox.Show("Party wurde hinzugefügt!!", "Gratuliere",
                                                             MessageBoxButton.OK, MessageBoxImage.Exclamation);

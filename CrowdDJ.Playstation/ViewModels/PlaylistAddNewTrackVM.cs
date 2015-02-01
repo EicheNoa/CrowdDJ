@@ -32,7 +32,8 @@ namespace CrowdDJ.Playstation.ViewModels
         private void AddNewTrack(object obj)
         {
             MessageBoxResult result;
-            if (Title == "" || Artist == "" || Url == "" || Genre == "")
+            if (Title == "" || Artist == "" || Url == "" || Genre == "" ||
+                Title == null || Artist == null || Url == null || Genre == null)
             {
                 result = MessageBox.Show("Alle Felder müssen ausgefüllt sein!", "Fehler",
                                          MessageBoxButton.OK, MessageBoxImage.Error);

@@ -62,20 +62,23 @@ namespace CrowdDJ.DAO
         public Tracklist FindTrackInTracklist(Tracklist tracklist)
         {
             Tracklist tl = null;
-            int rUserId = 0;
-            int rPlaylistId = 0;
-            int rTrackId = 0;
-
-            using (DbCommand cmd = CreateFindTrackInTracklistCmd(tracklist))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (tracklist != null && tracklist.PlaylistId != null && tracklist.PlaylistId != 0)
             {
-                while (rDr.Read())
+                int rUserId = 0;
+                int rPlaylistId = 0;
+                int rTrackId = 0;
+
+                using (DbCommand cmd = CreateFindTrackInTracklistCmd(tracklist))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rPlaylistId = rDr.GetInt32(0);
-                    rUserId = rDr.GetInt32(1);
-                    rTrackId = rDr.GetInt32(2);
-                    tl = new Tracklist(rPlaylistId, rUserId, rTrackId);
-                }
+                    while (rDr.Read())
+                    {
+                        rPlaylistId = rDr.GetInt32(0);
+                        rUserId = rDr.GetInt32(1);
+                        rTrackId = rDr.GetInt32(2);
+                        tl = new Tracklist(rPlaylistId, rUserId, rTrackId);
+                    }
+                } 
             }
             return tl;
         }
@@ -105,30 +108,33 @@ namespace CrowdDJ.DAO
         public ObservableCollection<Track> GetTracksRecommendedByUser(int userId)
         {
             ObservableCollection<Track> result = new ObservableCollection<Track>();
-            Track track = null;
-            int rTrackId = 0;
-            string rTitle = "";
-            string rArtist = "";
-            string rUrl = "";
-            string rGenre = "";
-            bool rIsVideo = false;
-
-            using (DbCommand cmd = CreateGetTracksRecommendedByUserCmd(userId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (userId != null && userId != 0)
             {
-                while (rDr.Read())
-                {
-                    rTrackId = rDr.GetInt32(0);
-                    rTitle = rDr.GetString(1);
-                    rArtist = rDr.GetString(2);
-                    rUrl = rDr.GetString(3);
-                    rGenre = rDr.GetString(4);
-                    rIsVideo = rDr.GetBoolean(5);
-                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
-                    track.TrackId = rTrackId;
+                Track track = null;
+                int rTrackId = 0;
+                string rTitle = "";
+                string rArtist = "";
+                string rUrl = "";
+                string rGenre = "";
+                bool rIsVideo = false;
 
-                    result.Add(track);
-                }
+                using (DbCommand cmd = CreateGetTracksRecommendedByUserCmd(userId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
+                {
+                    while (rDr.Read())
+                    {
+                        rTrackId = rDr.GetInt32(0);
+                        rTitle = rDr.GetString(1);
+                        rArtist = rDr.GetString(2);
+                        rUrl = rDr.GetString(3);
+                        rGenre = rDr.GetString(4);
+                        rIsVideo = rDr.GetBoolean(5);
+                        track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
+                        track.TrackId = rTrackId;
+
+                        result.Add(track);
+                    }
+                } 
             }
             return result;
         }

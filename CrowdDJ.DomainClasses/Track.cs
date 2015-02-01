@@ -61,6 +61,14 @@ namespace CrowdDJ.DomainClasses
             get { return isVideo; }
             set { isVideo = value; }
         }
+
+        private int nrVotes;
+
+        public int NrVotes
+        {
+            get { return nrVotes; }
+            set { nrVotes = value; }
+        }
         
     }
 }

@@ -11,6 +11,7 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <GridSplitter Grid.Column="0" Width="5" Margin="5, 0, 0, 0" VerticalAlignment="Stretch" />
         <Grid Grid.Column="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -22,7 +23,7 @@
                           Grid.Row="1" AutoGenerateColumns="False" 
                           ItemsSource="{Binding Path=AllParties, Mode=TwoWay}"  
                           SelectedItem="{Binding Path=IsSelectedParty, Mode=TwoWay}"
-                          EnableRowVirtualization="False">
+                          CanUserDeleteRows="False" CanUserSortColumns="False">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding DoubleClickCommand}"
@@ -76,7 +77,7 @@
                           AutoGenerateColumns="False" 
                           ItemsSource="{Binding Path=AllUser, Mode=TwoWay}"  
                           SelectedItem="{Binding Path=IsSelectedAddUser, Mode=TwoWay}"
-                          EnableRowVirtualization="False">
+                          CanUserDeleteRows="False" CanUserSortColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="UserID" Binding="{Binding Path=UserId}" Width="auto" />
                             <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="auto" />
@@ -95,7 +96,7 @@
                           AutoGenerateColumns="False" CanUserReorderColumns="False"
                           ItemsSource="{Binding Path=AttendingUser, Mode=TwoWay}"  
                           SelectedItem="{Binding Path=IsSelectedAttUser, Mode=TwoWay}"
-                          EnableRowVirtualization="False">
+                          CanUserDeleteRows="False" CanUserSortColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="UserID" Binding="{Binding Path=UserId}" Width="auto" />
                             <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="auto" />

@@ -25,6 +25,7 @@ namespace CrowdDJ.BL
         Party FindPartyById(string partyId);
         ObservableCollection<Party> FindPartyWithHost(string hostName);
         ObservableCollection<Party> GetAllParties();
+        ObservableCollection<Party> GetAllActivePartiesForUser(int userId);
         #endregion //Party
 
         #region Partytweet
@@ -71,6 +72,7 @@ namespace CrowdDJ.BL
         User FindUserById(int id);
         User FindUserByEmail(string email);
         List<KeyValuePair<string, bool>> GetAllEmails();
+        bool LoginUser(string email, string password);
         #endregion //User
 
         #region Vote

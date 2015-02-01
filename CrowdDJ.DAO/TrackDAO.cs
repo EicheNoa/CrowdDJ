@@ -21,10 +21,10 @@ namespace CrowdDJ.DAO
         const string CmdUpdate = @"UPDATE [dbo].[Track] SET title = @pTitle, artist = @pArtist, url = @pUrl,
                                                             genre = @pGenre, isVideo = @pIsVideo
                                     WHERE trackId = @pOldTrackId";
-        const string CmdSearchTitle = @"SELECT * FROM [dbo].[Track] WHERE isVideo = false";
+        const string CmdSearchTitle = @"SELECT * FROM [dbo].[Track] WHERE title = @pTitle";
         const string CmdSearch = @"SELECT * FROM [dbo].[Track] WHERE trackId = @pTrackId";
-        const string CmdSearchSongs = @"SELECT * FROM [dbo].[Track] WHERE isVideo = false";
-        const string CmdSearchVideos = @"SELECT * FROM [dbo].[Track] WHERE isVideo = true";
+        const string CmdSearchSongs = @"SELECT * FROM [dbo].[Track] WHERE isVideo = 0";
+        const string CmdSearchVideos = @"SELECT * FROM [dbo].[Track] WHERE isVideo = 1";
         const string CmdSearchGenre = @"SELECT * FROM [dbo].[Track] WHERE genre = @pGenre";
         const string CmdGetAllTracks = @"SELECT * FROM [dbo].[Track]";
 
@@ -146,27 +146,30 @@ namespace CrowdDJ.DAO
         public Track FindTrackById(int trackId)
         {
             Track track = null;
-            int rTrackId = 0;
-            string rTitle = "";
-            string rArtist = "";
-            string rUrl = "";
-            string rGenre = "";
-            bool rIsVideo = false;
-
-            using (DbCommand cmd = CreateSearchCmd(trackId))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (trackId != null && trackId != 0)
             {
-                while (rDr.Read())
+                int rTrackId = 0;
+                string rTitle = "";
+                string rArtist = "";
+                string rUrl = "";
+                string rGenre = "";
+                bool rIsVideo = false;
+
+                using (DbCommand cmd = CreateSearchCmd(trackId))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rTrackId = rDr.GetInt32(0);
-                    rTitle = rDr.GetString(1);
-                    rArtist = rDr.GetString(2);
-                    rUrl = rDr.GetString(3);
-                    rGenre = rDr.GetString(4);
-                    rIsVideo = rDr.GetBoolean(5);
-                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
-                    track.TrackId = rTrackId;
-                 }
+                    while (rDr.Read())
+                    {
+                        rTrackId = rDr.GetInt32(0);
+                        rTitle = rDr.GetString(1);
+                        rArtist = rDr.GetString(2);
+                        rUrl = rDr.GetString(3);
+                        rGenre = rDr.GetString(4);
+                        rIsVideo = rDr.GetBoolean(5);
+                        track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
+                        track.TrackId = rTrackId;
+                    }
+                } 
             }
             return track;
         }
@@ -174,29 +177,32 @@ namespace CrowdDJ.DAO
         public ObservableCollection<Track> FindTrackWithTitle(string trackTitle)
         {
             ObservableCollection<Track> result = new ObservableCollection<Track>();
-            Track track = null;
-            int rTrackId = 0;
-            string rTitle = "";
-            string rArtist = "";
-            string rUrl = "";
-            string rGenre = "";
-            bool rIsVideo = false;
-
-            using (DbCommand cmd = CreateSearchTitleCmd(trackTitle))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (trackTitle != null && trackTitle != "")
             {
-                while (rDr.Read())
+                Track track = null;
+                int rTrackId = 0;
+                string rTitle = "";
+                string rArtist = "";
+                string rUrl = "";
+                string rGenre = "";
+                bool rIsVideo = false;
+
+                using (DbCommand cmd = CreateSearchTitleCmd(trackTitle))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rTrackId = rDr.GetInt32(0);
-                    rTitle = rDr.GetString(1);
-                    rArtist = rDr.GetString(2);
-                    rUrl = rDr.GetString(3);
-                    rGenre = rDr.GetString(4);
-                    rIsVideo = rDr.GetBoolean(5);
-                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
-                    track.TrackId = rTrackId;
-                    result.Add(track);
-                }
+                    while (rDr.Read())
+                    {
+                        rTrackId = rDr.GetInt32(0);
+                        rTitle = rDr.GetString(1);
+                        rArtist = rDr.GetString(2);
+                        rUrl = rDr.GetString(3);
+                        rGenre = rDr.GetString(4);
+                        rIsVideo = rDr.GetBoolean(5);
+                        track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
+                        track.TrackId = rTrackId;
+                        result.Add(track);
+                    }
+                } 
             }
             return result;
         }
@@ -204,29 +210,32 @@ namespace CrowdDJ.DAO
         public ObservableCollection<Track> FindTracksInGenre(string trackGenre)
         {
             ObservableCollection<Track> result = new ObservableCollection<Track>();
-            Track track = null;
-            int rTrackId = 0;
-            string rTitle = "";
-            string rArtist = "";
-            string rUrl = "";
-            string rGenre = "";
-            bool rIsVideo = false;
-
-            using (DbCommand cmd = CreateSearchGenre(trackGenre))
-            using (IDataReader rDr = database.ExecuteReader(cmd))
+            if (trackGenre != null && trackGenre != "")
             {
-                while (rDr.Read())
+                Track track = null;
+                int rTrackId = 0;
+                string rTitle = "";
+                string rArtist = "";
+                string rUrl = "";
+                string rGenre = "";
+                bool rIsVideo = false;
+
+                using (DbCommand cmd = CreateSearchGenre(trackGenre))
+                using (IDataReader rDr = database.ExecuteReader(cmd))
                 {
-                    rTrackId = rDr.GetInt32(0);
-                    rTitle = rDr.GetString(1);
-                    rArtist = rDr.GetString(2);
-                    rUrl = rDr.GetString(3);
-                    rGenre = rDr.GetString(4);
-                    rIsVideo = rDr.GetBoolean(5);
-                    track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
-                    track.TrackId = rTrackId;
-                    result.Add(track);
-                }
+                    while (rDr.Read())
+                    {
+                        rTrackId = rDr.GetInt32(0);
+                        rTitle = rDr.GetString(1);
+                        rArtist = rDr.GetString(2);
+                        rUrl = rDr.GetString(3);
+                        rGenre = rDr.GetString(4);
+                        rIsVideo = rDr.GetBoolean(5);
+                        track = new Track(rTitle, rArtist, rUrl, rGenre, rIsVideo);
+                        track.TrackId = rTrackId;
+                        result.Add(track);
+                    }
+                } 
             }
 
             return result;

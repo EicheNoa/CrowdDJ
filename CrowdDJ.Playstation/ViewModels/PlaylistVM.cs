@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -36,17 +37,24 @@ namespace CrowdDJ.Playstation.ViewModels
             get { return isSelectedParty; }
             set
             {
-                isSelectedParty = value;
-                OnPropertyChanged("IsSelectedParty");
-                if (isSelectedParty.Equals(AllParties.First()))
+                try
                 {
-                    Tracks = bl.GetAllTracks();
+                    if (value != null)
+                    {
+                        isSelectedParty = value;
+                        if (isSelectedParty.Equals(AllParties.First()))
+                        {
+                            Tracks = bl.GetAllTracks();
+                        }
+                        else
+                        {
+                            UpdateTracks();
+                        }
+                        trackIndex = 0;
+                        OnPropertyChanged("IsSelectedParty");
+                    }
                 }
-                else
-                {
-                    UpdateTracks();
-                }
-                trackIndex = 0;
+                catch { }
             }
         }
 
@@ -89,7 +97,9 @@ namespace CrowdDJ.Playstation.ViewModels
         public ICommand NextMediaCommand { get; private set; }
 
         private int trackIndex;
+        private Party prevParty;
         private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
+        Timer timer = new Timer(10000);
         private MediaElement mediaElement = null;
 
         public PlaylistVM(MediaElement mediaElement)
@@ -104,9 +114,21 @@ namespace CrowdDJ.Playstation.ViewModels
             this.StopMediaCommand = new RelayCommand(this.StopMedia);
             this.PreviousMediaCommand = new RelayCommand(this.PreviousMedia);
             this.NextMediaCommand = new RelayCommand(this.NextMedia);
+            timer.Elapsed += Init;
             AllParties = bl.GetAllParties();
             IsSelectedParty = AllParties.First();
+            prevParty = IsSelectedParty;
             SetCurrentTrack();
+            timer.Start();
+        }
+
+        private void Init(object sender, ElapsedEventArgs e)
+        {
+            if (sender as Party != null)
+            {
+                AllParties = bl.GetAllParties();
+                UpdateTracks();
+            }
         }
 
         private void NextMedia(object obj)
@@ -164,11 +186,14 @@ namespace CrowdDJ.Playstation.ViewModels
 
         private void UpdateTracks()
         {
-            Playlist playlist = bl.GetPlaylistForParty(IsSelectedParty.PartyId);
-            if (playlist != null)
+            if (prevParty != IsSelectedParty)
             {
-                Tracks = bl.GetTracklistSortedVotes(playlist.PlaylistId);
-                SetCurrentTrack();
+                Playlist playlist = bl.GetPlaylistForParty(IsSelectedParty.PartyId);
+                if (playlist != null)
+                {
+                    Tracks = bl.GetTracklistSortedVotes(playlist.PlaylistId);
+                    SetCurrentTrack();
+                }
             }
         }
 
@@ -185,8 +210,7 @@ namespace CrowdDJ.Playstation.ViewModels
         {
             if (Tracks.Count() > 0)
             {
-                mediaElement.Stop();
-                SongTitle = Tracks[trackIndex].Title + " von " + Tracks[trackIndex].Artist;
+                mediaElement.Pause();
                 ConvertTrackUri(Tracks[trackIndex]);
                 mediaElement.Play();
             }
@@ -195,7 +219,7 @@ namespace CrowdDJ.Playstation.ViewModels
         private async void ConvertTrackUri(Track track)
         {
             string url = track.Url;
-            bool youtube = url.Contains("youtu");
+            bool youtube = url.Contains("youtube.com");
             if (youtube)
             {
                 int index = url.IndexOf("=");
@@ -205,6 +229,7 @@ namespace CrowdDJ.Playstation.ViewModels
                 url = youtubeurl.Uri.ToString();
             }
             CurrentTrack = new Uri(url);
+            SongTitle = Tracks[trackIndex].Title + " von " + Tracks[trackIndex].Artist;
         }
     }
 }

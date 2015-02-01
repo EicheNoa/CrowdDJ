@@ -1,5 +1,8 @@
 D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\bin\Debug\CrowdDJ.QRCode.dll
 D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\bin\Debug\CrowdDJ.QRCode.pdb
-D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\obj\Debug\CrowdDJ.QRCode.csprojResolveAssemblyReference.cache
 D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\obj\Debug\CrowdDJ.QRCode.dll
 D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\obj\Debug\CrowdDJ.QRCode.pdb
+D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\bin\Debug\MyToolkit.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\bin\Debug\MyToolkit.Extended.dll
+D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\bin\Debug\MyToolkit.xml
+D:\Uni\Git\CrowdDJ\CrowdDJ.QRCode\bin\Debug\MyToolkit.Extended.xml

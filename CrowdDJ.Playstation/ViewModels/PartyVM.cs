@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,8 +15,10 @@ namespace CrowdDJ.Playstation.ViewModels
 {
     class PartyVM : ViewModelBase
     {
-        private ObservableCollection<User> transformedUser { get; set; }
+        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
+        Timer timer = new Timer(10000);
         private ObservableCollection<User> collectionAllUser = new ObservableCollection<User>();
+
         private ObservableCollection<User> attendingUser;
         public ObservableCollection<User> AttendingUser
         {
@@ -46,8 +49,6 @@ namespace CrowdDJ.Playstation.ViewModels
         public ICommand DoubleClickCommand { get; private set; }
         public ICommand AddUserToPartyCommand { get; private set; }
 
-        private ICrowdDJBL bl = CrowdDJBL.GetCrowdDJBL();
-
         public PartyVM()
         {
             this.DeletePartyCommand = new RelayCommand(this.DeleteParty);
@@ -55,6 +56,12 @@ namespace CrowdDJ.Playstation.ViewModels
             this.AddNewPartyCommand = new RelayCommand(this.AddParty);
             this.DoubleClickCommand = new RelayCommand(this.SetSelectedParty);
             this.AddUserToPartyCommand = new RelayCommand(this.AddUserToParty);
+            timer.Elapsed += Init;
+            timer.Start();
+        }
+
+        private void Init(object sender, ElapsedEventArgs e)
+        {
             AllParties = bl.GetAllParties();
             collectionAllUser = bl.GetAllUser();
             AllUser = collectionAllUser;
@@ -66,10 +73,6 @@ namespace CrowdDJ.Playstation.ViewModels
         {
             AllUser = collectionAllUser;
             AttendingUser = bl.GetGuestlistForParty(IsSelectedParty.PartyId);
-            //foreach (var item in AttendingUser)
-            //{
-            //    AllUser.Remove(item);
-            //}
             for (int i = AllUser.Count() - 1; i >= 0; i--)
             {
                 var item = AllUser[i];
